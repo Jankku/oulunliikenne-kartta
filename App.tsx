@@ -1,6 +1,6 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
-import { GraphQLProvider } from './src/graphql/client'
+import { GraphQLProvider } from './src/graphql/client';
 import { StyleSheet, View, Dimensions } from 'react-native';
 
 export default function App() {
