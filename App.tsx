@@ -1,12 +1,15 @@
 import * as React from 'react';
 import MapView from 'react-native-maps';
+import { GraphQLProvider } from './src/graphql/client'
 import { StyleSheet, View, Dimensions } from 'react-native';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <MapView style={styles.map} />
-    </View>
+    <GraphQLProvider>
+      <View style={styles.container}>
+        <MapView style={styles.map} />
+      </View>
+    </GraphQLProvider>
   );
 }
 
