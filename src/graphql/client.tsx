@@ -19,5 +19,5 @@ export type GraphQLProviderProps = {
 };
 
 export function GraphQLProvider({ children }: GraphQLProviderProps) {
-  return <ApolloProvider client={graphQLClient}>...children</ApolloProvider>;
+  return <ApolloProvider client={graphQLClient}>{children}</ApolloProvider>;
 }
