@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { graphql } from '../generated/gql';
 import { minutesToMs } from '../utils/time';
 
 /**
@@ -6,7 +6,7 @@ import { minutesToMs } from '../utils/time';
  */
 const POLL_FREQUENCY = minutesToMs(5);
 
-const QUERY = gql`
+export const GET_CAR_PARKS = graphql(`
   query GetAllCarParks {
     carParks {
       carParkId
@@ -17,4 +17,4 @@ const QUERY = gql`
       spacesAvailable
     }
   }
-`;
+`);
