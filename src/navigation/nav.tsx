@@ -1,24 +1,16 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView from 'react-native-maps';
-import styles from '../styles/styles'
+import styles from '../styles/styles';
+import Map from '../screens/Map';
 
 function Cameras() {
   return (
     <SafeAreaView style={styles.safeAreaView}>
-        <Text>Kamerakuvat</Text>
-    </SafeAreaView>
-  );
-}
-
-function Map() {
-  return (
-    <SafeAreaView>
-      <MapView style={styles.map} />
+      <Text>Kamerakuvat</Text>
     </SafeAreaView>
   );
 }
@@ -58,22 +50,22 @@ function BottomNav() {
         style={{ backgroundColor: 'tomato' }}
       >
         <Tab.Screen
-          name="Cameras"
-          component={Cameras}
-          options={{
-            tabBarLabel: 'Kamerakuvat',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="camera" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
           name="Map"
           component={Map}
           options={{
             tabBarLabel: 'Kartta',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="map-legend" color={color} size={26} />
+              <MaterialCommunityIcons name="map-legend" color={color} size={24} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Cameras"
+          component={Cameras}
+          options={{
+            tabBarLabel: 'Kamerakuvat',
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="camera" color={color} size={24} />
             ),
           }}
         />
@@ -83,7 +75,7 @@ function BottomNav() {
           options={{
             tabBarLabel: 'Parkkipaikat',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="alpha-p-circle-outline" color={color} size={26} />
+              <MaterialCommunityIcons name="alpha-p-circle-outline" color={color} size={24} />
             ),
           }}
         />
@@ -93,7 +85,7 @@ function BottomNav() {
           options={{
             tabBarLabel: 'Liikenne',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="car" color={color} size={26} />
+              <MaterialCommunityIcons name="car" color={color} size={24} />
             ),
           }}
         />
@@ -103,7 +95,7 @@ function BottomNav() {
           options={{
             tabBarLabel: 'Auraus',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="snowflake" color={color} size={26} />
+              <MaterialCommunityIcons name="snowflake" color={color} size={24} />
             ),
           }}
         />
