@@ -44,5 +44,10 @@
     "prettier": "^2.7.1",
     "typescript": "~4.3.5"
   },
+  "overrides": {
+    "@react-navigation/material-bottom-tabs": {
+      "react-native-paper": "^5.0.0-rc.9"
+    }
+  },
   "private": true
 }
