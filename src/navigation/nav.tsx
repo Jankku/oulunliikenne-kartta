@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import Map from '../screens/Map';
+import AnnouncementNavigator from '../screens/announcement/AnnouncementNavigator';
 
 function Cameras() {
   return (
@@ -19,14 +20,6 @@ function ParkingHalls() {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Text>Parkkipaikat</Text>
-    </SafeAreaView>
-  );
-}
-
-function Traffic() {
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Text>Liikennetiedot</Text>
     </SafeAreaView>
   );
 }
@@ -80,12 +73,12 @@ function BottomNav() {
           }}
         />
         <Tab.Screen
-          name="Traffic"
-          component={Traffic}
+          name="Announcement"
+          component={AnnouncementNavigator}
           options={{
-            tabBarLabel: 'Liikenne',
+            tabBarLabel: 'Tiedotteet',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="car" color={color} size={24} />
+              <MaterialCommunityIcons name="alert-rhombus-outline" color={color} size={24} />
             ),
           }}
         />
