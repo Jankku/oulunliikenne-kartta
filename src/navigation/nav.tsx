@@ -7,14 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import Map from '../screens/Map';
 import AnnouncementNavigator from '../screens/announcement/AnnouncementNavigator';
-
-function Cameras() {
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Text>Kamerakuvat</Text>
-    </SafeAreaView>
-  );
-}
+import Cameras from '../screens/Cameras/CameraNavigator'
 
 function ParkingHalls() {
   return (
