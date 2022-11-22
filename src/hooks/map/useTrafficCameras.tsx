@@ -1,17 +1,30 @@
-import { GetAllCamerasQuery } from '../../generated/graphql';
+import { ApolloError } from '@apollo/client';
+import { SchemaType, QueryResult, useQuery } from '../../graphql/cameras';
+import { CameraModel, fromSchemaToModel } from '../../models/camera';
 
-type TrafficCamera = {
-  cameraId: string;
-  name: string;
-  lat: number;
-  lon: number;
-};
 
-export default function useTrafficCameras(data: GetAllCamerasQuery | undefined): {
-  cameras: TrafficCamera[] | null;
-} {
-  if (!data) return { cameras: null };
+//This might be a bad assumption, but let's just show the freshest data or nothing
+export type LoadingState = {
+  loading : true;
+}
 
-  const validCameras = data.cameras?.filter((c) => c && c.cameraId && c.name && c.lat && c.lon);
-  return { cameras: (validCameras as TrafficCamera[]) ?? null };
+export type ResultState = {
+  loading : false
+  error : ApolloError | undefined
+  data : CameraModel[]
+}
+
+export type TrafficCameraData = ResultState | LoadingState;
+
+export default function useTrafficCameras(): TrafficCameraData {
+  const { loading, data, error } : QueryResult = useQuery();
+
+  if(!loading) {
+    const cameras = data?.cameras.filter((c) => c && c.cameraId && c.name && c.lat && c.lon)
+                                                           .map(fromSchemaToModel);
+
+    return {loading: loading, error : error, data : cameras ? cameras : []};
+  }
+
+  return { loading: loading};
 }
