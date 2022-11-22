@@ -11,7 +11,6 @@ export type CameraProps = {
 export function CameraMarker({ camera }: CameraProps): JSX.Element {
   return (
     <Marker
-      key={camera.cameraId}
       image={cameraIcon}
       coordinate={camera.coordinates}
       title={camera.name}

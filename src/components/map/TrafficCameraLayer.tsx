@@ -9,7 +9,7 @@ export default function TrafficCameraLayer() {
   if(result.loading)
     return null;
 
-  const markers = result.data.map((camera) => <CameraMarker camera={camera} />);
+  const markers = result.data.map((camera) => <CameraMarker key={camera.cameraId} camera={camera} />);
   
   return (
     <>
