@@ -1,34 +1,34 @@
-import { useQuery } from '@apollo/client';
 import { Card, ProgressBar, Text } from 'react-native-paper';
-import { GET_CAMERAS } from '../../graphql/cameras';
 import { FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import useTrafficCameras from '../../hooks/map/useTrafficCameras';
+import { toErrorMessage } from '../../graphql/error';
 
 export default function CameraList() {
-  const { data, loading, error } = useQuery(GET_CAMERAS);
+  const result = useTrafficCameras();
 
-  if (error) {
-    return <Text>{error.message}</Text>;
+  if (result.loading) {
+    return <ProgressBar indeterminate />;
   }
 
-  if (data?.cameras) {
-    return (
-      <FlatList
-        data={data?.cameras}
-        keyExtractor={(item) => item!.cameraId}
-        renderItem={({ item }) => (
-          <Card>
-            <Card.Title
-              title={item?.name}
-              left={(props) => (
-                <MaterialCommunityIcons name="camera" color={'black'} {...props} />
-              )}
-            />
-          </Card>
-        )}
-      />
-    );
+  if (result.error) {
+    return <Text>{toErrorMessage(result.error)}</Text>;
   }
 
-  return <ProgressBar indeterminate />;
+  //Should we check for an empty array and return an error text?
+
+  return (
+    <FlatList
+      data={result.data}
+      keyExtractor={(item) => item.cameraId}
+      renderItem={({ item }) => (
+        <Card>
+          <Card.Title
+            title={item.name}
+            left={(props) => <MaterialCommunityIcons name="camera" color={'black'} {...props} />}
+          />
+        </Card>
+      )}
+    />
+  );
 }
