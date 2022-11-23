@@ -24,7 +24,7 @@ export class TrafficFluencyCollectionModel implements TrafficFluencyShape {
     [TrafficFlow.TrafficFlowNormal] : TrafficFluencyModel[] = [];
     [TrafficFlow.TrafficHeavierThanNormal] : TrafficFluencyModel[] = [];
     [TrafficFlow.TrafficMuchHeavierThanNormal] : TrafficFluencyModel[] = [];
-    values = new Map<string,any>()
+    values = new Map<string,TrafficFluencyModel>()
 
     addTrafficFlow(info: TrafficFluencyModel) {
         this.values.set(info.id,info);
