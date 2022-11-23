@@ -1,12 +1,12 @@
 import { toOpaqueError } from '../../graphql/error';
-import { SchemaType, QueryResult, useQuery } from '../../graphql/cameras';
+import { SchemaType, Result, useQuery } from '../../graphql/cameras';
 import { CameraModel, fromSchemaToModel } from '../../models/camera';
 import { QueryHookResult } from '../../graphql/result';
 
 export type TrafficCameraData = QueryHookResult<CameraModel[]>;
 
 export default function useTrafficCameras(): TrafficCameraData {
-  const { loading, data, error }: QueryResult = useQuery();
+  const { loading, data, error }: Result = useQuery();
 
   if (!loading) {
     if (error) {

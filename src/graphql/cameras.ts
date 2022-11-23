@@ -1,5 +1,6 @@
-import { ApolloError, gql, useQuery as useApolloQuery } from '@apollo/client';
+import { gql, useQuery as useApolloQuery } from '@apollo/client';
 import { minutesToMs } from '../utils/time';
+import { QueryResult } from './result';
 
 
 /**
@@ -24,15 +25,11 @@ export type SchemaType = {
 };
 
 
-export type QueryResult = {
-  loading : boolean
-  error? : ApolloError | undefined
-  data? : SchemaType
-}
+export type Result = QueryResult<SchemaType>
 /**
  * Query hook for Traffic camera data
  */
-export function useQuery() : QueryResult {
+export function useQuery() : Result {
   return useApolloQuery<SchemaType>(GET_CAMERAS, { pollInterval: POLL_FREQUENCY });
 }
 
