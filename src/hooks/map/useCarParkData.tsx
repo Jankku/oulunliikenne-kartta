@@ -1,6 +1,6 @@
 import { toOpaqueError } from '../../graphql/error';
 import { Result, useQuery } from '../../graphql/parking';
-import { ParkingModel, fromSchemaToModel } from '../../models/parking';
+import { ParkingModel, fromSchemaToModel, KNOWN_DEMOLISHED_LOCATION_NAMES } from '../../models/parking';
 import { QueryHookResult } from '../../graphql/result';
 
 export type CarParkData = QueryHookResult<ParkingModel[]>;
@@ -16,7 +16,7 @@ export default function useCarParkData(): CarParkData {
     const carParks : ParkingModel[] = [];
     
     data?.carParks.forEach((parking) => {
-      if(!(parking.lat && parking.lon)) {
+      if(!(parking.lat && parking.lon && !KNOWN_DEMOLISHED_LOCATION_NAMES.has(parking.name))) {
         //Filters out demolished / out of usage locations
         return;
       }

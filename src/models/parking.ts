@@ -1,7 +1,6 @@
 import { LatLng } from "react-native-maps";
 import { SchemaParking } from "../graphql/parking";
 
-
 export const INFORMATION_NOT_AVAILABLE: string = 'Ei tiedossa';
 
 export type ParkingModel = {
@@ -22,3 +21,5 @@ export function fromSchemaToModel(schemaObject : SchemaParking) : ParkingModel {
     spacesAvailable : schemaObject.spacesAvailable?.toString() ?? INFORMATION_NOT_AVAILABLE,
   };
 }
+
+export const KNOWN_DEMOLISHED_LOCATION_NAMES = new Set<String>(['Medipark']);
