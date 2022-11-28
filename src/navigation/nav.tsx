@@ -6,8 +6,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import Map from '../screens/Map';
-import AnnouncementNavigator from '../screens/announcement/AnnouncementNavigator';
-import Cameras from '../screens/Cameras/CameraNavigator'
+import Cameras from '../screens/Cameras/CameraNavigator';
+import { BottomNavStackParamList } from './types';
+import AnnouncementStackNavigator from '../screens/announcement/AnnouncementStackNavigator';
 
 function ParkingHalls() {
   return (
@@ -25,9 +26,9 @@ function Plowing() {
   );
 }
 
-const Tab = createMaterialBottomTabNavigator();
-
 function BottomNav() {
+  const Tab = createMaterialBottomTabNavigator<BottomNavStackParamList>();
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -67,7 +68,7 @@ function BottomNav() {
         />
         <Tab.Screen
           name="Announcement"
-          component={AnnouncementNavigator}
+          component={AnnouncementStackNavigator}
           options={{
             tabBarLabel: 'Tiedotteet',
             tabBarIcon: ({ color }) => (
