@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import MapView, { Region } from 'react-native-maps';
-import TrafficCamera from '../components/map/TrafficCamera';
-import TrafficFluency from '../components/map/TrafficFluency';
+import ParkingLayer from '../components/map/ParkingLayer';
+import TrafficCameraLayer from '../components/map/TrafficCameraLayer';
+import TrafficFluencyLayer from '../components/map/TrafficFluency';
 
 export default function Map() {
   const [region, setRegion] = useState<Region>({
@@ -15,8 +16,9 @@ export default function Map() {
   return (
     <SafeAreaView>
       <MapView style={styles.map} initialRegion={region}>
-        <TrafficFluency />
-        <TrafficCamera />
+        <TrafficFluencyLayer />
+        <TrafficCameraLayer />
+        <ParkingLayer/>
       </MapView>
     </SafeAreaView>
   );

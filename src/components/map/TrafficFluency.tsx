@@ -1,32 +1,56 @@
-import { useQuery } from '@apollo/client';
 import { Geojson } from 'react-native-maps';
-import { GET_TRAFFIC_FLUENCY } from '../../graphql/traffic-fluency';
 import useTrafficFluencyCollections from '../../hooks/map/useTrafficFluencyCollections';
+import { TrafficFlow, TrafficFluencyCollectionModel, ValidTrafficFlowValues } from '../../models/trafficflow';
 
-function TrafficFluency() {
-  const { data } = useQuery(GET_TRAFFIC_FLUENCY);
-  const { collections } = useTrafficFluencyCollections(data);
+
+type Line = {
+  color : string
+  strokeWidth : number
+}
+
+type ColorInfo = {
+  [T in ValidTrafficFlowValues] : Line
+}
+
+//TODO: define these in a style
+const lineInfo : ColorInfo = {
+  [TrafficFlow.TrafficFlowNormal] : { color : 'green', strokeWidth : 4},
+  [TrafficFlow.TrafficHeavierThanNormal] :  { color : 'orange', strokeWidth : 2},
+  [TrafficFlow.TrafficMuchHeavierThanNormal] :  { color : 'red', strokeWidth : 2},
+}
+
+function TrafficFluencyLayer() {
+  const result = useTrafficFluencyCollections();
+
+  //Do not render anything if still loading or got an error
+  if(result.loading || result.error) {
+    return null;
+  }
+  const {data} = result;
 
   return (
     <>
-      {collections
-        ? Object.keys(collections).map((key) => {
-            const collection = collections[key as keyof typeof collections];
-            if (collection === null) return;
-
-            return (
-              <Geojson
-                key={key}
-                geojson={collection.trafficFluencyFeatureCollection as GeoJSON.FeatureCollection}
-                strokeColor={key}
-                fillColor={key}
-                strokeWidth={key !== 'green' ? 4 : 2}
-              />
-            );
-          })
-        : null}
+    {toGeoJson(data,TrafficFlow.TrafficFlowNormal)} 
+    {toGeoJson(data,TrafficFlow.TrafficHeavierThanNormal)}
+    {toGeoJson(data,TrafficFlow.TrafficMuchHeavierThanNormal)} 
     </>
   );
 }
 
-export default TrafficFluency;
+function toGeoJson(data : TrafficFluencyCollectionModel, which: ValidTrafficFlowValues) : JSX.Element[] {
+  return data[which].map((entry) => {
+    const {color, strokeWidth} = lineInfo[which];
+  
+    return (
+      <Geojson
+        key={entry.id}
+        geojson={entry.geometry}
+        strokeColor={color}
+        fillColor={color}
+        strokeWidth={strokeWidth}
+      />
+    );
+  });
+}
+
+export default TrafficFluencyLayer;
