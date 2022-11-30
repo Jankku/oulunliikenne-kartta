@@ -7,8 +7,6 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "codegen": "graphql-codegen --config codegen.ts",
-    "codegen:watch": "graphql-codegen --watch --config codegen.ts",
     "lint": "npx eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write ."
@@ -36,9 +34,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@graphql-codegen/cli": "2.13.12",
-    "@graphql-codegen/client-preset": "^1.1.4",
-    "@graphql-codegen/typescript": "^2.8.2",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.69.1",
     "@types/react-native-maps": "^0.24.2",
