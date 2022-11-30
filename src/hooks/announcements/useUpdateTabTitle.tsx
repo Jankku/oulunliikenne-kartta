@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationProp } from '@react-navigation/native';
 
-export default function useUpdateTabTitle<T extends {}>(
+export default function useUpdateTabTitle<T extends Record<string, unknown>>(
   navigation: NavigationProp<T>,
   title: string,
   dependencies: React.DependencyList
@@ -10,5 +10,5 @@ export default function useUpdateTabTitle<T extends {}>(
     navigation.setOptions({
       title,
     });
-  }, [navigation, dependencies]);
+  }, [navigation, title, dependencies]);
 }

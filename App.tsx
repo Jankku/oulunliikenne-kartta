@@ -1,14 +1,15 @@
-import * as React from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React from 'react';
 import { BottomNav } from './src/navigation/nav';
 import { GraphQLProvider } from './src/graphql/client';
-import { Provider as DialogProvider } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 export default function App() {
   return (
     <GraphQLProvider>
-      <DialogProvider>
+      <PaperProvider>
         <BottomNav />
-      </DialogProvider>
+      </PaperProvider>
     </GraphQLProvider>
   );
 }

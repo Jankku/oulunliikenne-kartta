@@ -6,25 +6,25 @@ const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
 export default function Cameras() {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerShadowVisible: false,
-        }}
-      >
-        <Stack.Screen name="Kamerat" component={TabNavigator} />
-      </Stack.Navigator>
-    );
-  }
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShadowVisible: false,
+      }}
+    >
+      <Stack.Screen name="Kamerat" component={TabNavigator} />
+    </Stack.Navigator>
+  );
+}
 
 function TabNavigator() {
-    return (
-      <Tab.Navigator
-        screenOptions={{
-          lazy: true,
-        }}
-      >
-        <Tab.Screen name="Lista kameroista" component={CameraList} />
-      </Tab.Navigator>
-    );
-  }
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        lazy: true,
+      }}
+    >
+      <Tab.Screen name="Lista kameroista" component={CameraList} />
+    </Tab.Navigator>
+  );
+}

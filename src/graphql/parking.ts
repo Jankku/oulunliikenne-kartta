@@ -1,10 +1,10 @@
-import { gql, useQuery as useApolloQuery} from '@apollo/client';
+import { gql, useQuery as useApolloQuery } from '@apollo/client';
 import { minutesToMs } from '../utils/time';
 import { QueryResult } from './result';
 
 export type SchemaType = {
-  carParks: SchemaParking[]
-}
+  carParks: SchemaParking[];
+};
 
 export type SchemaParking = {
   carParkId: string;
@@ -15,8 +15,7 @@ export type SchemaParking = {
   spacesAvailable: number;
 };
 
-export type Result = QueryResult<SchemaType>
-
+export type Result = QueryResult<SchemaType>;
 
 export function useQuery(): Result {
   return useApolloQuery<SchemaType>(QUERY, { pollInterval: POLL_FREQUENCY });
@@ -39,4 +38,3 @@ const QUERY = gql`
     }
   }
 `;
-

@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal } from 'react-native-paper';
 import { TrafficAnnouncementFilters } from '../../../screens/announcement/TrafficAnnouncement';
-import SeveritySection from './SeveritySection';
 import TransportModeSection from './TransportModeSection';
 
 type TrafficAnnouncementFilterDialogProps = {

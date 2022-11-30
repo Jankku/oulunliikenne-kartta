@@ -9,11 +9,11 @@ export type CameraModel = {
 };
 
 export type CameraImage = {
-    id: string;
-    name: string;
-    imageUrl: string;
-    measuredTime: string;
-  }
+  id: string;
+  name: string;
+  imageUrl: string;
+  measuredTime: string;
+};
 
 /**
  * @param item Schema version of traffic camera
@@ -24,11 +24,13 @@ export function fromSchemaToModel(item: SchemaCamera): CameraModel {
     cameraId: item.cameraId,
     name: item.name,
     coordinates: { latitude: item.lat, longitude: item.lon },
-    images : item.presets.map((preset) => { return {
-        id: preset.presetId, 
-        name : preset.presentationName, 
-        imageUrl : preset.imageUrl, 
-        measuredTime : preset.measuredTime
-    }})
+    images: item.presets.map((preset) => {
+      return {
+        id: preset.presetId,
+        name: preset.presentationName,
+        imageUrl: preset.imageUrl,
+        measuredTime: preset.measuredTime,
+      };
+    }),
   };
 }

@@ -1,18 +1,18 @@
 import { Dispatch } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Chip, Text } from 'react-native-paper';
-import { TrafficDisruptionModeOfTransport } from '../../../generated/graphql';
+import { TrafficDisruptionModeOfTransport } from '../../../models/trafficannouncement';
 import { TrafficAnnouncementFilters } from '../../../screens/announcement/TrafficAnnouncement';
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
   chip: {
     margin: 2,
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
   },
 });
 

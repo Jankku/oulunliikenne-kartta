@@ -9,13 +9,13 @@ type TrafficAnnouncementCardProps = {
 };
 
 const styles = StyleSheet.create({
+  rightStyle: {
+    paddingEnd: 16,
+  },
   style: {
     paddingVertical: 16,
   },
   subtitleStyle: { opacity: 0.8 },
-  rightStyle: {
-    paddingEnd: 16,
-  },
 });
 
 export default function TrafficAnnouncementCard({

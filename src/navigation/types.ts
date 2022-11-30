@@ -29,9 +29,3 @@ export type AnnouncementTabScreenProps<T extends keyof AnnouncementTabNavigatorP
     MaterialTopTabScreenProps<AnnouncementTabNavigatorParamList, T>,
     BottomNavScreenProps<keyof BottomNavStackParamList>
   >;
-
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends BottomNavStackParamList {}
-  }
-}

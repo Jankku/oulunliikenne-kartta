@@ -22,10 +22,12 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  ignorePatterns: ['node_modules', '.expo', '.expo-shared', 'assets'],
+  ignorePatterns: ['node_modules', '.expo', '.expo-shared', 'assets', '*.config.js'],
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react-native/no-raw-text': 'off',
+    'react-native/no-color-literals': 'off',
+    'react-native/no-inline-styles': 'off',
   },
   settings: {
     react: {

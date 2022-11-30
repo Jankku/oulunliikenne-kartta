@@ -5,7 +5,7 @@ import { FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function RoadWork() {
-  const { data, loading, error } = useQuery(GET_ROADWORK);
+  const { data, error } = useQuery(GET_ROADWORK);
 
   if (error) {
     return <Text>{error.message}</Text>;
@@ -15,7 +15,7 @@ export default function RoadWork() {
     return (
       <FlatList
         data={data?.roadworks}
-        keyExtractor={(item) => item!.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <Card>
             <Card.Title

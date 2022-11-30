@@ -1,5 +1,5 @@
 import { toOpaqueError } from '../../graphql/error';
-import { SchemaType, Result, useQuery } from '../../graphql/cameras';
+import { Result, useQuery } from '../../graphql/cameras';
 import { CameraModel, fromSchemaToModel } from '../../models/camera';
 import { QueryHookResult } from '../../graphql/result';
 

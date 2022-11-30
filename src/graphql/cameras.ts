@@ -2,7 +2,6 @@ import { gql, useQuery as useApolloQuery } from '@apollo/client';
 import { minutesToMs } from '../utils/time';
 import { QueryResult } from './result';
 
-
 /**
  * Assume that Schema contains all the members defined here.
  * Sanity checks should be done before using the type raw from a query
@@ -18,18 +17,17 @@ export type SchemaCamera = {
     imageUrl: string;
     measuredTime: string;
   }[];
-}
+};
 
 export type SchemaType = {
   cameras: SchemaCamera[];
 };
 
-
-export type Result = QueryResult<SchemaType>
+export type Result = QueryResult<SchemaType>;
 /**
  * Query hook for Traffic camera data
  */
-export function useQuery() : Result {
+export function useQuery(): Result {
   return useApolloQuery<SchemaType>(GET_CAMERAS, { pollInterval: POLL_FREQUENCY });
 }
 

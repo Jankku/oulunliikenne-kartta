@@ -1,6 +1,6 @@
-import { graphql } from '../generated';
+import { gql } from '@apollo/client';
 
-export const GET_ROADWORK = graphql(`
+export const GET_ROADWORK = gql`
   query GetAllRoadworks {
     roadworks {
       id
@@ -15,4 +15,4 @@ export const GET_ROADWORK = graphql(`
       geojson
     }
   }
-`);
+`;
