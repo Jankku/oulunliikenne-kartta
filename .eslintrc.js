@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   env: {
     es2021: true,
     node: true,
@@ -6,13 +7,14 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'plugin:react-native/all',
   ],
-  plugins: ['react', 'react-hooks', 'react-native', 'prettier'],
-  parser: '',
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'react-native', 'prettier'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -20,11 +22,10 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  ignorePatterns: ['node_modules', '.expo', '.expo-shared'],
+  ignorePatterns: ['node_modules', '.expo', '.expo-shared', 'assets'],
   rules: {
-    'react/prop-types': 'off',
-    'react-native/no-unused-styles': 'off',
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'react-native/no-raw-text': 'off',
   },
   settings: {
     react: {
