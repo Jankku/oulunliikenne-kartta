@@ -1,104 +1,78 @@
-import { useQuery } from '@apollo/client';
-import { GET_TRAFFIC_ANNOUNCEMENT } from '../../graphql/trafficannouncement';
 import TrafficAnnouncementCard from '../../components/announcement/TrafficAnnouncementCard';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import { FlatList, View, StyleSheet, Pressable } from 'react-native';
-import useFilteredTrafficAnnouncements from '../../hooks/announcements/useFilteredTrafficAnnouncements';
+import { FlatList, View, StyleSheet } from 'react-native';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import Center from '../../components/util/Center';
-import React, { useEffect, useReducer, useState } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import type { AnnouncementTabScreenProps } from '../../navigation/types';
-import TrafficAnnouncementFilterDialog from '../../components/announcement/TrafficAnnouncementFilterDialog';
-import {
-  LocalizedString,
-  TrafficDisruptionModeOfTransport,
-  TrafficDisruptionSeverity,
-  TrafficDisruptionValidityStatus,
-} from '../../generated/graphql';
+import TrafficAnnouncementFilterDialog from '../../components/announcement/dialog/TrafficAnnouncementFilterDialog';
+import { TrafficDisruptionModeOfTransport } from '../../models/trafficannouncement';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
+import useTrafficAnnouncements, {
+  TrafficAnnouncementsResult,
+} from '../../hooks/announcements/useTrafficAnnouncements';
+import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
+import { toErrorMessage } from '../../graphql/error';
+import {
+  TrafficAnnouncementModel,
+  TrafficDisruptionValidityStatus,
+} from '../../models/trafficannouncement';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   errorText: {
-    textAlign: 'center',
     fontWeight: '700',
+    textAlign: 'center',
   },
-  listContainer: { flex: 1, justifyContent: 'center', alignContent: 'center' },
+  listContainer: { alignContent: 'center', flex: 1, justifyContent: 'center' },
 });
-
-type TrafficAnnouncementSchema = {
-  id: string;
-  title: LocalizedString;
-  description: LocalizedString;
-  severity: TrafficDisruptionSeverity;
-  status: TrafficDisruptionValidityStatus;
-  modesOfTransport: TrafficDisruptionModeOfTransport[];
-};
-
-type TrafficAnnouncementSchemaType = {
-  trafficAnnouncements: TrafficAnnouncementSchema[];
-};
-
-export type TrafficAnnouncementModel = {
-  id: string;
-  title: string;
-  description: string;
-  severity: TrafficDisruptionSeverity;
-  status: TrafficDisruptionValidityStatus;
-  modesOfTransport: TrafficDisruptionModeOfTransport[];
-};
-
-const fromTrafficSchemaToModel = (
-  announcement: TrafficAnnouncementSchema
-): TrafficAnnouncementModel => {
-  return {
-    id: announcement.id,
-    title: announcement.title?.fi ?? 'Ei otsikkoa',
-    description: announcement.description?.fi ?? 'Ei kuvausta',
-    severity: announcement.severity ?? TrafficDisruptionSeverity.Unknown,
-    status: announcement.status ?? TrafficDisruptionValidityStatus.Suspended,
-    modesOfTransport: announcement.modesOfTransport as TrafficDisruptionModeOfTransport[],
-  };
-};
 
 export type TrafficAnnouncementFilters = {
   modesOfTransport: TrafficDisruptionModeOfTransport[];
 };
+
+const filterAnnouncements = (
+  result: TrafficAnnouncementsResult,
+  filters: TrafficAnnouncementFilters
+): TrafficAnnouncementModel[] => {
+  if (result.loading || result.error) return [];
+  if (isFiltersEmpty(filters)) return result.data;
+
+  const filtered = result.data.filter((a) => {
+    const isModeOfTransportAccepted = a.modesOfTransport.some((mode) =>
+      filters.modesOfTransport.includes(mode)
+    );
+    const isNotSuspended = a.status !== TrafficDisruptionValidityStatus.Suspended;
+
+    return isModeOfTransportAccepted && isNotSuspended;
+  });
+
+  return filtered;
+};
+
+const isFiltersEmpty = (filters: TrafficAnnouncementFilters) =>
+  filters.modesOfTransport.length === 0;
 
 export default function TrafficAnnouncement({
   navigation,
 }: AnnouncementTabScreenProps<'TrafficAnnouncement'>) {
   const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
   const [filters, setFilters] = useState<TrafficAnnouncementFilters>({ modesOfTransport: [] });
-  const [announcements, setAnnouncements] = useState<TrafficAnnouncementModel[]>([]);
-  const filteredAnnouncements = useFilteredTrafficAnnouncements(announcements, filters);
 
-  const { loading, error } = useQuery<TrafficAnnouncementSchemaType>(GET_TRAFFIC_ANNOUNCEMENT, {
-    onCompleted: (data) => {
-      if (!data.trafficAnnouncements) return;
-      const transformedAnnouncements = data.trafficAnnouncements.map(fromTrafficSchemaToModel);
-      setAnnouncements(transformedAnnouncements);
-    },
-  });
+  const result = useTrafficAnnouncements();
+  const announcements = useMemo(() => filterAnnouncements(result, filters), [result, filters]);
 
   useEffect(() => {
     navigation.getParent()?.setOptions({
-      headerRight: () => (
-        <Pressable onPress={() => toggleFilterDialog()}>
-          <MaterialCommunityIcons name={'filter'} size={24} color={'black'} />
-        </Pressable>
-      ),
+      headerRight: () => <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
     });
   }, [navigation]);
 
-  useUpdateTabTitle(navigation, `Häiriöt (${filteredAnnouncements.length})`, [
-    filteredAnnouncements,
-  ]);
+  useUpdateTabTitle(navigation, `Häiriöt (${announcements.length})`, [announcements]);
 
-  if (loading) {
+  if (result.loading) {
     return (
       <Center>
         <ActivityIndicator animating size={'large'} />
@@ -106,10 +80,10 @@ export default function TrafficAnnouncement({
     );
   }
 
-  if (error) {
+  if (result.error) {
     return (
       <Center>
-        <Text style={styles.errorText}>{error.message}</Text>
+        <Text style={styles.errorText}>{toErrorMessage(result.error)}</Text>
       </Center>
     );
   }
@@ -118,8 +92,8 @@ export default function TrafficAnnouncement({
     <>
       <View style={styles.container}>
         <FlatList
-          contentContainerStyle={filteredAnnouncements ? undefined : styles.listContainer}
-          data={filteredAnnouncements}
+          contentContainerStyle={announcements ? undefined : styles.listContainer}
+          data={announcements}
           ListEmptyComponent={TrafficAnnouncementListEmpty}
           renderItem={({ item }) => (
             <TrafficAnnouncementCard title={item.title} description={item.description} />
