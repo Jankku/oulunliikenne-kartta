@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import Map from '../screens/Map';
 import Cameras from '../screens/Cameras/CameraNavigator';
+import { AppBar }  from '../navigation/appBar'
 import { BottomNavStackParamList } from './types';
 import AnnouncementStackNavigator from '../screens/announcement/AnnouncementStackNavigator';
 
@@ -47,7 +48,7 @@ function BottomNav() {
         />
         <Tab.Screen
           name="Cameras"
-          component={Cameras}
+          component={AppBar}
           options={{
             tabBarLabel: 'Kamerakuvat',
             tabBarIcon: ({ color }) => (

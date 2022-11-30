@@ -8,7 +8,12 @@ const pics = [
 ];
 
 export default function Details() {
-  return <SafeAreaView>{pics.map(ImageElement)}</SafeAreaView>;
+    return (
+        <SafeAreaView>
+            
+        {pics.map(ImageElement)}
+        </SafeAreaView>
+    );
 }
 
 function ImageElement(item: string, index: number): JSX.Element {
