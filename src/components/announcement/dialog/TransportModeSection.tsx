@@ -40,13 +40,12 @@ export default function TransportModeSection({
   const selectChip = (mode: TrafficDisruptionModeOfTransport) => {
     setFilters((filters) => {
       const prevModes = filters.modesOfTransport;
-      if (!prevModes) return { modesOfTransport: [] };
 
       if (prevModes.includes(mode)) {
-        return { modesOfTransport: prevModes.filter((m) => m !== mode) };
+        return { ...filters, modesOfTransport: prevModes.filter((m) => m !== mode) };
       } else {
         prevModes.push(mode);
-        return { modesOfTransport: prevModes };
+        return { ...filters, modesOfTransport: prevModes };
       }
     });
   };
@@ -63,8 +62,8 @@ export default function TransportModeSection({
               compact
               showSelectedOverlay
               key={mode}
-              selected={selected}
               mode="outlined"
+              selected={selected}
               icon={chip.icon}
               style={styles.chip}
               onPress={() => selectChip(mode)}

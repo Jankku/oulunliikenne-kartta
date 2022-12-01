@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal } from 'react-native-paper';
 import { TrafficAnnouncementFilters } from '../../../screens/announcement/TrafficAnnouncement';
+import SeveritySection from './SeveritySection';
 import TransportModeSection from './TransportModeSection';
 
 type TrafficAnnouncementFilterDialogProps = {
@@ -17,10 +18,6 @@ export default function TrafficAnnouncementFilterDialog({
   toggleDialog,
   setFilters,
 }: TrafficAnnouncementFilterDialogProps) {
-  const onCancelClick = () => {
-    toggleDialog();
-  };
-
   const onOkClick = () => {
     toggleDialog();
   };
@@ -35,11 +32,9 @@ export default function TrafficAnnouncementFilterDialog({
               transportModeFilters={filters.modesOfTransport}
               setFilters={setFilters}
             />
+            <SeveritySection severityFilters={filters.severity} setFilters={setFilters} />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button textColor="red" onPress={onCancelClick}>
-              Peruuta
-            </Button>
             <Button onPress={onOkClick}>Ok</Button>
           </Dialog.Actions>
         </Dialog>

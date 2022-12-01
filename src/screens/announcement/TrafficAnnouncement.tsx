@@ -6,7 +6,10 @@ import Center from '../../components/util/Center';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import type { AnnouncementTabScreenProps } from '../../navigation/types';
 import TrafficAnnouncementFilterDialog from '../../components/announcement/dialog/TrafficAnnouncementFilterDialog';
-import { TrafficDisruptionModeOfTransport } from '../../models/trafficannouncement';
+import {
+  TrafficDisruptionModeOfTransport,
+  TrafficDisruptionSeverity,
+} from '../../models/trafficannouncement';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
 import useTrafficAnnouncements, {
   TrafficAnnouncementsResult,
@@ -17,6 +20,7 @@ import {
   TrafficAnnouncementModel,
   TrafficDisruptionValidityStatus,
 } from '../../models/trafficannouncement';
+import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,35 +35,16 @@ const styles = StyleSheet.create({
 
 export type TrafficAnnouncementFilters = {
   modesOfTransport: TrafficDisruptionModeOfTransport[];
+  severity: TrafficDisruptionSeverity[];
 };
-
-const filterAnnouncements = (
-  result: TrafficAnnouncementsResult,
-  filters: TrafficAnnouncementFilters
-): TrafficAnnouncementModel[] => {
-  if (result.loading || result.error) return [];
-  if (isFiltersEmpty(filters)) return result.data;
-
-  const filtered = result.data.filter((a) => {
-    const isModeOfTransportAccepted = a.modesOfTransport.some((mode) =>
-      filters.modesOfTransport.includes(mode)
-    );
-    const isNotSuspended = a.status !== TrafficDisruptionValidityStatus.Suspended;
-
-    return isModeOfTransportAccepted && isNotSuspended;
-  });
-
-  return filtered;
-};
-
-const isFiltersEmpty = (filters: TrafficAnnouncementFilters) =>
-  filters.modesOfTransport.length === 0;
-
 export default function TrafficAnnouncement({
   navigation,
 }: AnnouncementTabScreenProps<'TrafficAnnouncement'>) {
   const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
-  const [filters, setFilters] = useState<TrafficAnnouncementFilters>({ modesOfTransport: [] });
+  const [filters, setFilters] = useState<TrafficAnnouncementFilters>({
+    modesOfTransport: [],
+    severity: [],
+  });
 
   const result = useTrafficAnnouncements();
   const announcements = useMemo(() => filterAnnouncements(result, filters), [result, filters]);
@@ -83,7 +68,9 @@ export default function TrafficAnnouncement({
   if (result.error) {
     return (
       <Center>
-        <Text style={styles.errorText}>{toErrorMessage(result.error)}</Text>
+        <Text variant="bodyLarge" style={styles.errorText}>
+          {toErrorMessage(result.error)}
+        </Text>
       </Center>
     );
   }
@@ -92,7 +79,7 @@ export default function TrafficAnnouncement({
     <>
       <View style={styles.container}>
         <FlatList
-          contentContainerStyle={announcements ? undefined : styles.listContainer}
+          contentContainerStyle={announcements.length === 0 ? styles.listContainer : undefined}
           data={announcements}
           ListEmptyComponent={TrafficAnnouncementListEmpty}
           renderItem={({ item }) => (
@@ -110,3 +97,32 @@ export default function TrafficAnnouncement({
     </>
   );
 }
+
+const filterAnnouncements = (
+  result: TrafficAnnouncementsResult,
+  filters: TrafficAnnouncementFilters
+): TrafficAnnouncementModel[] => {
+  if (result.loading || result.error) return [];
+  if (isAllFiltersEmpty(filters)) return result.data;
+
+  const isNotSuspended = (ann: TrafficAnnouncementModel) =>
+    ann.status !== TrafficDisruptionValidityStatus.Suspended;
+
+  const isCorrectTransportMode = (ann: TrafficAnnouncementModel) =>
+    ann.modesOfTransport.some((mode) => filters.modesOfTransport.includes(mode));
+
+  const isCorrectSeverity = (ann: TrafficAnnouncementModel) =>
+    filters.severity.includes(ann.severity);
+
+  let filtered = result.data.filter(isNotSuspended);
+
+  if (isFilterNotEmpty(filters.modesOfTransport)) {
+    filtered = filtered.filter(isCorrectTransportMode);
+  }
+
+  if (isFilterNotEmpty(filters.severity)) {
+    filtered = filtered.filter(isCorrectSeverity);
+  }
+
+  return filtered;
+};
