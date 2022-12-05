@@ -1,19 +1,16 @@
 import { Appbar } from 'react-native-paper';
 import React from 'react';
-import { Menu } from 'react-native-paper';
+import { StackHeaderProps } from '@react-navigation/stack';
 
-
-
-
-function CustomNavigationBar({ navigation, back }) {
-    const [visible, setVisible] = React.useState(false);
-    const openMenu = () => setVisible(true);
-    const closeMenu = () => setVisible(false);
+export default function CustomAppBar({ navigation, back }: StackHeaderProps) {
+  const [visible, setVisible] = React.useState(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
 
   return (
     <Appbar.Header>
       {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
-      <Appbar.Content title="Kamerakuvat" />
+      <Appbar.Content title={'Kamerakuvat'} />
       {/* {!back ? (
         <Menu
           visible={visible}
@@ -29,5 +26,3 @@ function CustomNavigationBar({ navigation, back }) {
     </Appbar.Header>
   );
 }
-
-export { CustomNavigationBar };

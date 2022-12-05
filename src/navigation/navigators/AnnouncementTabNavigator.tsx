@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { AnnouncementTabNavigatorParamList } from '../../navigation/types';
-import RoadWork from './RoadWork';
-import TrafficAnnouncement from './TrafficAnnouncement';
+import { AnnouncementTabNavigatorParamList } from '../types';
+import RoadWork from '../../screens/announcement/RoadWork';
+import TrafficAnnouncement from '../../screens/announcement/TrafficAnnouncement';
 
 export default function AnnouncementTabNavigator() {
   const Tab = createMaterialTopTabNavigator<AnnouncementTabNavigatorParamList>();

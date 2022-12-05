@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AnnouncementStackNavigatorParamList } from '../../navigation/types';
+import { AnnouncementStackNavigatorParamList } from '../types';
 import AnnouncementTabNavigator from './AnnouncementTabNavigator';
 
 export default function AnnouncementStackNavigator() {

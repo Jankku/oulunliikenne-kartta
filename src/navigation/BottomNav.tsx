@@ -5,10 +5,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import Map from '../screens/Map';
-import Cameras from '../screens/Cameras/CameraNavigator';
-import { AppBar }  from '../navigation/appBar'
 import { BottomNavStackParamList } from './types';
-import AnnouncementStackNavigator from '../screens/announcement/AnnouncementStackNavigator';
+import AnnouncementStackNavigator from './navigators/AnnouncementStackNavigator';
+import CameraListStackNavigator from './navigators/CameraListStackNavigator';
 
 function ParkingHalls() {
   return (
@@ -48,7 +47,7 @@ function BottomNav() {
         />
         <Tab.Screen
           name="Cameras"
-          component={AppBar}
+          component={CameraListStackNavigator}
           options={{
             tabBarLabel: 'Kamerakuvat',
             tabBarIcon: ({ color }) => (
