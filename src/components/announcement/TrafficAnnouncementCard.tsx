@@ -2,11 +2,7 @@ import { Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useReducer } from 'react';
 import { StyleSheet } from 'react-native';
-
-type TrafficAnnouncementCardProps = {
-  title: string;
-  description: string;
-};
+import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
 
 const styles = StyleSheet.create({
   rightStyle: {
@@ -18,9 +14,26 @@ const styles = StyleSheet.create({
   subtitleStyle: { opacity: 0.8 },
 });
 
+const severityColors: Record<TrafficDisruptionSeverity, string> = {
+  HIGHEST: 'red',
+  HIGH: 'red',
+  MEDIUM: 'orange',
+  LOW: 'green',
+  LOWEST: 'green',
+  NONE: 'gray',
+  UNKNOWN: 'gray',
+};
+
+type TrafficAnnouncementCardProps = {
+  title: string;
+  description: string;
+  severity: TrafficDisruptionSeverity;
+};
+
 export default function TrafficAnnouncementCard({
   title,
   description,
+  severity,
 }: TrafficAnnouncementCardProps) {
   const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
 
@@ -32,7 +45,13 @@ export default function TrafficAnnouncementCard({
           titleNumberOfLines={0}
           subtitle={showDescription ? description : undefined}
           subtitleNumberOfLines={0}
-          left={(props) => <MaterialCommunityIcons name="alert-rhombus" color={'red'} {...props} />}
+          left={(props) => (
+            <MaterialCommunityIcons
+              name="alert-rhombus"
+              color={severityColors[severity]}
+              {...props}
+            />
+          )}
           right={(props) => (
             <MaterialCommunityIcons
               name={showDescription ? 'chevron-up' : 'chevron-down'}

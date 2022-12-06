@@ -83,7 +83,11 @@ export default function TrafficAnnouncement({
           data={announcements}
           ListEmptyComponent={TrafficAnnouncementListEmpty}
           renderItem={({ item }) => (
-            <TrafficAnnouncementCard title={item.title} description={item.description} />
+            <TrafficAnnouncementCard
+              title={item.title}
+              description={item.description}
+              severity={item.severity}
+            />
           )}
         />
       </View>
