@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TrafficAnnouncementMap from '../../screens/announcement/TrafficAnnouncementMap';
 import { AnnouncementStackNavigatorParamList } from '../types';
 import AnnouncementTabNavigator from './AnnouncementTabNavigator';
 
@@ -14,6 +15,7 @@ export default function AnnouncementStackNavigator() {
       }}
     >
       <Stack.Screen name="TabNavigator" component={AnnouncementTabNavigator} />
+      <Stack.Screen name="AnnouncementMap" component={TrafficAnnouncementMap} />
     </Stack.Navigator>
   );
 }

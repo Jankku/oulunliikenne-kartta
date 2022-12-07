@@ -4,16 +4,19 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import Center from '../../components/util/Center';
 import { useEffect, useMemo, useReducer, useState } from 'react';
-import type { AnnouncementTabScreenProps } from '../../navigation/types';
+import type {
+  AnnouncementStackNavigatorParamList,
+  AnnouncementTabScreenProps,
+} from '../../navigation/types';
 import TrafficAnnouncementFilterDialog from '../../components/announcement/dialog/TrafficAnnouncementFilterDialog';
 import {
   TrafficDisruptionModeOfTransport,
   TrafficDisruptionSeverity,
 } from '../../models/trafficannouncement';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
-import useTrafficAnnouncements, {
-  TrafficAnnouncementsResult,
-} from '../../hooks/announcements/useTrafficAnnouncements';
+import useAllTrafficAnnouncements, {
+  AllTrafficAnnouncementsResult,
+} from '../../hooks/announcements/useAllTrafficAnnouncements';
 import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
 import { toErrorMessage } from '../../graphql/error';
 import {
@@ -21,22 +24,13 @@ import {
   TrafficDisruptionValidityStatus,
 } from '../../models/trafficannouncement';
 import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  errorText: {
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  listContainer: { alignContent: 'center', flex: 1, justifyContent: 'center' },
-});
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type TrafficAnnouncementFilters = {
   modesOfTransport: TrafficDisruptionModeOfTransport[];
   severity: TrafficDisruptionSeverity[];
 };
+
 export default function TrafficAnnouncement({
   navigation,
 }: AnnouncementTabScreenProps<'TrafficAnnouncement'>) {
@@ -46,7 +40,7 @@ export default function TrafficAnnouncement({
     severity: [],
   });
 
-  const result = useTrafficAnnouncements();
+  const result = useAllTrafficAnnouncements();
   const announcements = useMemo(() => filterAnnouncements(result, filters), [result, filters]);
 
   useEffect(() => {
@@ -87,6 +81,11 @@ export default function TrafficAnnouncement({
               title={item.title}
               description={item.description}
               severity={item.severity}
+              onNavigateToMapPress={() =>
+                navigation
+                  .getParent<StackNavigationProp<AnnouncementStackNavigatorParamList>>()
+                  ?.navigate('AnnouncementMap', { announcementId: item.id })
+              }
             />
           )}
         />
@@ -103,7 +102,7 @@ export default function TrafficAnnouncement({
 }
 
 const filterAnnouncements = (
-  result: TrafficAnnouncementsResult,
+  result: AllTrafficAnnouncementsResult,
   filters: TrafficAnnouncementFilters
 ): TrafficAnnouncementModel[] => {
   if (result.loading || result.error) return [];
@@ -130,3 +129,14 @@ const filterAnnouncements = (
 
   return filtered;
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  errorText: {
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  listContainer: { alignContent: 'center', flex: 1, justifyContent: 'center' },
+});

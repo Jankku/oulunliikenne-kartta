@@ -1,7 +1,7 @@
-import { Card } from 'react-native-paper';
+import { Button, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useReducer } from 'react';
-import { StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
 
 const styles = StyleSheet.create({
@@ -28,18 +28,20 @@ type TrafficAnnouncementCardProps = {
   title: string;
   description: string;
   severity: TrafficDisruptionSeverity;
+  onNavigateToMapPress: () => void;
 };
 
 export default function TrafficAnnouncementCard({
   title,
   description,
   severity,
+  onNavigateToMapPress,
 }: TrafficAnnouncementCardProps) {
   const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
 
   return (
-    <>
-      <Card onPress={() => setShowDescription()}>
+    <Card>
+      <Pressable onPress={() => setShowDescription()}>
         <Card.Title
           title={title}
           titleNumberOfLines={0}
@@ -62,7 +64,14 @@ export default function TrafficAnnouncementCard({
           subtitleStyle={styles.subtitleStyle}
           rightStyle={styles.rightStyle}
         />
-      </Card>
-    </>
+      </Pressable>
+      {showDescription ? (
+        <Card.Actions>
+          <Button mode="text" onPress={onNavigateToMapPress}>
+            Avaa kartalla
+          </Button>
+        </Card.Actions>
+      ) : null}
+    </Card>
   );
 }

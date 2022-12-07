@@ -1,4 +1,7 @@
-import { TrafficAnnouncementSchema } from '../graphql/trafficannouncement';
+import {
+  TrafficAnnouncementFeatureCollection,
+  TrafficAnnouncementSchema,
+} from '../graphql/trafficannouncement';
 
 export enum TrafficDisruptionSeverity {
   High = 'HIGH',
@@ -30,17 +33,21 @@ export type TrafficAnnouncementModel = {
   severity: TrafficDisruptionSeverity;
   status: TrafficDisruptionValidityStatus;
   modesOfTransport: TrafficDisruptionModeOfTransport[];
+  geojson: TrafficAnnouncementFeatureCollection;
+  detour: TrafficAnnouncementFeatureCollection;
 };
 
 export const fromSchemaToModel = (
   announcement: TrafficAnnouncementSchema
 ): TrafficAnnouncementModel => {
   return {
-    id: announcement.id,
+    id: announcement.announcementId,
     title: announcement.title.fi,
     description: announcement.description?.fi,
     severity: announcement.severity,
     status: announcement.status,
     modesOfTransport: announcement.modesOfTransport,
+    geojson: announcement.geojson,
+    detour: announcement.detour,
   };
 };

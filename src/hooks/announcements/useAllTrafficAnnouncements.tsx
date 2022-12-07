@@ -1,12 +1,12 @@
 import { toOpaqueError } from '../../graphql/error';
 import { QueryHookResult } from '../../graphql/result';
-import { Result, useQuery } from '../../graphql/trafficannouncement';
+import { AllResult, useAllQuery } from '../../graphql/trafficannouncement';
 import { fromSchemaToModel, TrafficAnnouncementModel } from '../../models/trafficannouncement';
 
-export type TrafficAnnouncementsResult = QueryHookResult<TrafficAnnouncementModel[]>;
+export type AllTrafficAnnouncementsResult = QueryHookResult<TrafficAnnouncementModel[]>;
 
-export default function useTrafficAnnouncements(): TrafficAnnouncementsResult {
-  const { loading, data, error }: Result = useQuery();
+export default function useAllTrafficAnnouncements(): AllTrafficAnnouncementsResult {
+  const { loading, data, error }: AllResult = useAllQuery();
 
   if (!loading) {
     if (error) {
@@ -16,7 +16,7 @@ export default function useTrafficAnnouncements(): TrafficAnnouncementsResult {
     const announcements: TrafficAnnouncementModel[] = [];
 
     data?.trafficAnnouncements
-      .filter((a) => a.id && a.title && a.severity && a.status && a.modesOfTransport)
+      .filter((a) => a.announcementId && a.title && a.severity && a.status && a.modesOfTransport)
       .forEach((a) => announcements.push(fromSchemaToModel(a)));
 
     return { data: announcements, loading: loading };
