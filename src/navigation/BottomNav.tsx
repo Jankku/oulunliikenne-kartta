@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import Map from '../screens/Map';
+import About from '../screens/About';
 import { BottomNavStackParamList } from './types';
 import AnnouncementStackNavigator from './navigators/AnnouncementStackNavigator';
 import CameraListStackNavigator from './navigators/CameraListStackNavigator';
@@ -13,14 +14,6 @@ function ParkingHalls() {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Text>Parkkipaikat</Text>
-    </SafeAreaView>
-  );
-}
-
-function Plowing() {
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Text>Auraustiedot</Text>
     </SafeAreaView>
   );
 }
@@ -76,12 +69,12 @@ function BottomNav() {
           }}
         />
         <Tab.Screen
-          name="Plowing"
-          component={Plowing}
+          name="About"
+          component={About}
           options={{
-            tabBarLabel: 'Auraus',
+            tabBarLabel: 'Tietoa',
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="snowflake" color={color} size={24} />
+              <MaterialCommunityIcons name="information" color={color} size={24} />
             ),
           }}
         />

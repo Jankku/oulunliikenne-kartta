@@ -7,7 +7,7 @@ export type BottomNavStackParamList = {
   Cameras: undefined;
   ParkingHalls: undefined;
   Announcement: undefined;
-  Plowing: undefined;
+  About: undefined;
 };
 
 export type BottomNavScreenProps<T extends keyof BottomNavStackParamList> = NativeStackScreenProps<
