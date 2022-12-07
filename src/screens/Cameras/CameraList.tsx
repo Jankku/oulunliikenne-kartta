@@ -1,10 +1,11 @@
 import { Card, ProgressBar, Text } from 'react-native-paper';
-import { Button, View, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useTrafficCameras from '../../hooks/map/useTrafficCameras';
 import { toErrorMessage } from '../../graphql/error';
+import { CameraStackScreenProps } from '../../navigation/types';
 
-export default function CameraList({ navigation }) {
+export default function CameraList({ navigation }: CameraStackScreenProps<'CameraList'>) {
   const result = useTrafficCameras();
 
   if (result.loading) {
@@ -19,12 +20,11 @@ export default function CameraList({ navigation }) {
 
   return (
     <View>
-      <Button title="Go to details" onPress={() => navigation.navigate('Details')} />
       <FlatList
         data={result.data}
         keyExtractor={(item) => item.cameraId}
         renderItem={({ item }) => (
-          <Card>
+          <Card onPress={() => navigation.navigate('CameraDetail', { cameraId: item.cameraId })}>
             <Card.Title
               title={item.name}
               left={(props) => <MaterialCommunityIcons name="camera" color={'black'} {...props} />}

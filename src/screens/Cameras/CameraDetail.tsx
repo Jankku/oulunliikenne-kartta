@@ -1,5 +1,6 @@
 import { Card, Paragraph, Title } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CameraStackScreenProps } from '../../navigation/types';
 
 const pics = [
   'https://placekitten.com/g/400/250',
@@ -7,13 +8,12 @@ const pics = [
   'https://placekitten.com/g/400/250',
 ];
 
-export default function Details() {
-    return (
-        <SafeAreaView>
-            
-        {pics.map(ImageElement)}
-        </SafeAreaView>
-    );
+export default function CameraDetail({
+  navigation,
+  route,
+}: CameraStackScreenProps<'CameraDetail'>) {
+  const { cameraId } = route.params;
+  return <SafeAreaView>{pics.map(ImageElement)}</SafeAreaView>;
 }
 
 function ImageElement(item: string, index: number): JSX.Element {
