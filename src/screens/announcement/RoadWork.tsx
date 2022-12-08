@@ -1,30 +1,38 @@
 import { useQuery } from '@apollo/client';
-import { Card, ProgressBar, Text } from 'react-native-paper';
+import { ProgressBar, Text, ActivityIndicator } from 'react-native-paper';
 import { GET_ROADWORK } from '../../graphql/roadwork';
 import { FlatList } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import RoadWorkCard from '../../components/announcement/RoadWorkCard';
+import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
+import { AnnouncementTabScreenProps } from '../../navigation/types';
+import Center from '../../components/util/Center';
 
-export default function RoadWork() {
-  const { data, error } = useQuery(GET_ROADWORK);
+export default function RoadWork({ navigation }: AnnouncementTabScreenProps<'RoadWork'>) {
+  const result = useQuery(GET_ROADWORK);
 
-  if (error) {
-    return <Text>{error.message}</Text>;
+  useUpdateTabTitle(navigation, `Tietyöt (${result.data?.roadworks.length ?? 0})`, [
+    result.data?.roadworks,
+  ]);
+
+  if (result.loading) {
+    return (
+      <Center>
+        <ActivityIndicator animating size={'large'} />
+      </Center>
+    );
   }
 
-  if (data?.roadworks) {
+  if (result.error) {
+    return <Text>{result.error.message}</Text>;
+  }
+
+  if (result.data?.roadworks) {
     return (
       <FlatList
-        data={data?.roadworks}
+        data={result.data?.roadworks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Card>
-            <Card.Title
-              title={item?.description?.fi ?? 'Ei kuvausta'}
-              left={(props) => (
-                <MaterialCommunityIcons name="traffic-cone" color={'red'} {...props} />
-              )}
-            />
-          </Card>
+          <RoadWorkCard text={item.description.fi} onNavigateToMapPress={() => {}} />
         )}
       />
     );
