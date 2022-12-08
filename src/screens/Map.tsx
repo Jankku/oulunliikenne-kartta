@@ -2,7 +2,7 @@ import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import ParkingLayer from '../components/map/ParkingLayer';
 import TrafficCameraLayer from '../components/map/TrafficCameraLayer';
-import TrafficFluencyLayer from '../components/map/TrafficFluency';
+import TrafficFluencyLayer from '../components/map/TrafficFluencyLayer';
 
 export default function Map() {
   return (

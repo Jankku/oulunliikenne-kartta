@@ -17,9 +17,9 @@ type ColorInfo = {
 
 //TODO: define these in a style
 const lineInfo: ColorInfo = {
-  [TrafficFlow.TrafficFlowNormal]: { color: 'green', strokeWidth: 4 },
-  [TrafficFlow.TrafficHeavierThanNormal]: { color: 'orange', strokeWidth: 2 },
-  [TrafficFlow.TrafficMuchHeavierThanNormal]: { color: 'red', strokeWidth: 2 },
+  [TrafficFlow.TrafficFlowNormal]: { color: 'rgba(0, 120, 40, 0.7)', strokeWidth: 4 },
+  [TrafficFlow.TrafficHeavierThanNormal]: { color: 'rgba(230, 160, 0, 0.7)', strokeWidth: 5 },
+  [TrafficFlow.TrafficMuchHeavierThanNormal]: { color: 'rgba(200, 0, 0, 0.7)', strokeWidth: 5 },
 };
 
 function TrafficFluencyLayer() {

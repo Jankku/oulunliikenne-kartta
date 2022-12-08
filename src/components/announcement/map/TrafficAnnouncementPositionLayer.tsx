@@ -8,5 +8,12 @@ type AnnouncementPositionLayerProps = {
 export default function TrafficAnnouncementPositionLayer({
   geojson,
 }: AnnouncementPositionLayerProps) {
-  return <Geojson geojson={geojson} strokeColor={'rgba(255, 0, 0, 0.5)'} strokeWidth={20} />;
+  return (
+    <Geojson
+      geojson={geojson}
+      strokeColor={'rgba(200, 0, 0, 0.7)'}
+      fillColor={'rgba(200, 0, 0, 0.5)'}
+      strokeWidth={8}
+    />
+  );
 }

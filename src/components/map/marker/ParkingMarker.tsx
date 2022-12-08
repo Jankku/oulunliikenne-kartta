@@ -17,7 +17,7 @@ export default function ParkingMarker({ carkPark }: ParkingProps): JSX.Element {
    */
   return (
     <Marker coordinate={carkPark.coordinates} title={carkPark.name}>
-      <Image source={{ uri: result.uri, width: 24, height: 24 }} />
+      <Image source={{ uri: result.uri, width: 20, height: 20 }} />
     </Marker>
   );
 }

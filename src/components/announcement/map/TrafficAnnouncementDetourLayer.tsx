@@ -9,7 +9,7 @@ export default function TrafficAnnouncementDetourLayer({ detour }: AnnouncementD
   return (
     <>
       {detour ? (
-        <Geojson geojson={detour} strokeColor={'rgba(0, 255, 0, 0.5)'} strokeWidth={15} />
+        <Geojson geojson={detour} strokeColor={'rgba(0, 120, 40, 0.7)'} strokeWidth={8} />
       ) : null}
     </>
   );
