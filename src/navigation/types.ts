@@ -15,6 +15,10 @@ export type BottomNavScreenProps<T extends keyof BottomNavStackParamList> = Nati
   T
 >;
 
+export type MapStackNavigatorParamList = {
+  MapScreen: undefined;
+};
+
 export type AnnouncementStackNavigatorParamList = {
   TabNavigator: undefined;
   AnnouncementMap: { announcementId: string };
@@ -47,3 +51,7 @@ export type CameraStackScreenProps<T extends keyof CameraListStackNavigatorParam
     NativeStackScreenProps<CameraListStackNavigatorParamList, T>,
     BottomNavScreenProps<keyof BottomNavStackParamList>
   >;
+
+export type AboutStackNavigatorParamList = {
+  AboutScreen: undefined;
+};

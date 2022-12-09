@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import CameraList from '../../screens/Cameras/CameraList';
-import Details from '../../screens/Cameras/CameraDetail';
+import CameraDetail from '../../screens/Cameras/CameraDetail';
 import CustomAppBar from '../CustomAppBar';
 import { CameraListStackNavigatorParamList } from '../types';
 
@@ -15,8 +15,12 @@ export default function CameraListStackNavigator() {
         header: (props) => <CustomAppBar {...props} />,
       }}
     >
-      <Stack.Screen name="CameraList" component={CameraList} />
-      <Stack.Screen name="CameraDetail" component={Details} />
+      <Stack.Screen name="CameraList" component={CameraList} options={{ title: 'Kamerakuvat' }} />
+      <Stack.Screen
+        name="CameraDetail"
+        component={CameraDetail}
+        options={{ title: 'Kamerakuvat' }}
+      />
     </Stack.Navigator>
   );
 }

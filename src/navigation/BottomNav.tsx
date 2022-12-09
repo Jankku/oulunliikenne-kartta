@@ -4,11 +4,11 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
-import Map from '../screens/Map';
-import About from '../screens/About';
 import { BottomNavStackParamList } from './types';
 import AnnouncementStackNavigator from './navigators/AnnouncementStackNavigator';
 import CameraListStackNavigator from './navigators/CameraListStackNavigator';
+import MapStackNavigator from './navigators/MapStackNavigator';
+import AboutStackNavigator from './navigators/AboutStackNavigator';
 
 function ParkingHalls() {
   return (
@@ -27,15 +27,37 @@ function BottomNav() {
         initialRouteName="Map"
         activeColor="#e91e63"
         style={{ backgroundColor: 'tomato' }}
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color }) => {
+            let iconName: keyof typeof MaterialCommunityIcons.glyphMap;
+
+            switch (route.name) {
+              case 'Map':
+                iconName = focused ? 'map' : 'map-outline';
+                break;
+              case 'Cameras':
+                iconName = focused ? 'camera' : 'camera-outline';
+                break;
+              case 'ParkingHalls':
+                iconName = focused ? 'alpha-p-circle' : 'alpha-p-circle-outline';
+                break;
+              case 'Announcement':
+                iconName = focused ? 'alert-rhombus' : 'alert-rhombus-outline';
+                break;
+              case 'About':
+                iconName = focused ? 'information' : 'information-outline';
+                break;
+            }
+
+            return <MaterialCommunityIcons name={iconName} size={24} color={color} />;
+          },
+        })}
       >
         <Tab.Screen
           name="Map"
-          component={Map}
+          component={MapStackNavigator}
           options={{
             tabBarLabel: 'Kartta',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="map-legend" color={color} size={24} />
-            ),
           }}
         />
         <Tab.Screen
@@ -43,9 +65,6 @@ function BottomNav() {
           component={CameraListStackNavigator}
           options={{
             tabBarLabel: 'Kamerakuvat',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="camera" color={color} size={24} />
-            ),
           }}
         />
         <Tab.Screen
@@ -53,9 +72,6 @@ function BottomNav() {
           component={ParkingHalls}
           options={{
             tabBarLabel: 'Parkkipaikat',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="alpha-p-circle-outline" color={color} size={24} />
-            ),
           }}
         />
         <Tab.Screen
@@ -63,19 +79,13 @@ function BottomNav() {
           component={AnnouncementStackNavigator}
           options={{
             tabBarLabel: 'Tiedotteet',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="alert-rhombus-outline" color={color} size={24} />
-            ),
           }}
         />
         <Tab.Screen
           name="About"
-          component={About}
+          component={AboutStackNavigator}
           options={{
             tabBarLabel: 'Tietoa',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="information" color={color} size={24} />
-            ),
           }}
         />
       </Tab.Navigator>

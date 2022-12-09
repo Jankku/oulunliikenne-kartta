@@ -45,7 +45,7 @@ export default function TrafficAnnouncement({
 
   useEffect(() => {
     navigation.getParent()?.setOptions({
-      headerRight: () => <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
+      headerRight: <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
     });
   }, [navigation]);
 
@@ -76,6 +76,7 @@ export default function TrafficAnnouncement({
           contentContainerStyle={announcements.length === 0 ? styles.listContainer : undefined}
           data={announcements}
           ListEmptyComponent={TrafficAnnouncementListEmpty}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TrafficAnnouncementCard
               title={item.title}
