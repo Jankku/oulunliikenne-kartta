@@ -24,7 +24,7 @@ export default function CameraList({ navigation }: CameraStackScreenProps<'Camer
         data={result.data}
         keyExtractor={(item) => item.cameraId}
         renderItem={({ item }) => (
-          <Card onPress={() => navigation.navigate('CameraDetail', { cameraId: item.cameraId })}>
+          <Card onPress={() => navigation.navigate('CameraDetail', { camera: item })}>
             <Card.Title
               title={item.name}
               left={(props) => <MaterialCommunityIcons name="camera" color={'black'} {...props} />}

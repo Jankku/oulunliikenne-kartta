@@ -1,9 +1,8 @@
-import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
-import CameraList from '../../screens/Cameras/CameraList';
-import CameraDetail from '../../screens/Cameras/CameraDetail';
-import CustomAppBar from '../CustomAppBar';
-import { CameraListStackNavigatorParamList } from '../types';
+import CameraList from '../../../screens/Cameras/CameraList';
+import CameraDetail from '../../../screens/Cameras/CameraDetail';
+import CustomAppBar from '../../CustomAppBar';
+import { CameraListStackNavigatorParamList } from '../../types';
 
 const Stack = createStackNavigator<CameraListStackNavigatorParamList>();
 

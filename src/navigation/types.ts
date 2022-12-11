@@ -1,6 +1,7 @@
-import type { CompositeScreenProps } from '@react-navigation/native';
+import type { CompositeScreenProps } from '@react-navigation/core';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
+import { CameraModel } from '../models/camera';
 
 export type BottomNavStackParamList = {
   Map: undefined;
@@ -43,7 +44,7 @@ export type AnnouncementTabScreenProps<T extends keyof AnnouncementTabNavigatorP
 
 export type CameraListStackNavigatorParamList = {
   CameraList: undefined;
-  CameraDetail: { cameraId: string };
+  CameraDetail: { camera: CameraModel };
 };
 
 export type CameraStackScreenProps<T extends keyof CameraListStackNavigatorParamList> =

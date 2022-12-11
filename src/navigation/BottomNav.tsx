@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from '../styles/styles';
 import { BottomNavStackParamList } from './types';
 import AnnouncementStackNavigator from './navigators/AnnouncementStackNavigator';
-import CameraListStackNavigator from './navigators/CameraListStackNavigator';
+import CameraListStackNavigator from './navigators/CameraDetail/CameraListStackNavigator';
 import MapStackNavigator from './navigators/MapStackNavigator';
 import AboutStackNavigator from './navigators/AboutStackNavigator';
 
