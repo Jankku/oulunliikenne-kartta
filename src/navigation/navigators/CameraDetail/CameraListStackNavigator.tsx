@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import CameraList from '../../../screens/Cameras/CameraList';
-import CameraDetail from '../../../screens/Cameras/CameraDetail';
+import { CameraDetailCameraListScreen } from '../../../screens/Cameras/CameraDetail';
 import CustomAppBar from '../../CustomAppBar';
 import { CameraListStackNavigatorParamList } from '../../types';
 
@@ -17,7 +17,7 @@ export default function CameraListStackNavigator() {
       <Stack.Screen name="CameraList" component={CameraList} options={{ title: 'Kamerakuvat' }} />
       <Stack.Screen
         name="CameraDetail"
-        component={CameraDetail}
+        component={CameraDetailCameraListScreen}
         options={(props) => {
           return { title: props.route.params.camera.name };
         }}

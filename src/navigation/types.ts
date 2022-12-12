@@ -18,6 +18,7 @@ export type BottomNavScreenProps<T extends keyof BottomNavStackParamList> = Nati
 
 export type MapStackNavigatorParamList = {
   MapScreen: undefined;
+  CameraDetail: { camera: CameraModel };
 };
 
 export type AnnouncementStackNavigatorParamList = {
@@ -51,6 +52,12 @@ export type CameraListStackNavigatorParamList = {
 export type CameraStackScreenProps<T extends keyof CameraListStackNavigatorParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<CameraListStackNavigatorParamList, T>,
+    BottomNavScreenProps<keyof BottomNavStackParamList>
+  >;
+
+export type MapStackScreenProps<T extends keyof MapStackNavigatorParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<MapStackNavigatorParamList, T>,
     BottomNavScreenProps<keyof BottomNavStackParamList>
   >;
 

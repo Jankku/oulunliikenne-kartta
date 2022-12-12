@@ -1,15 +1,19 @@
-import React from 'react';
 import { FlatList, ListRenderItemInfo } from 'react-native';
-import { Card, Paragraph, Title } from 'react-native-paper';
+import { Card, Title } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CameraImage } from '../../models/camera';
-import { CameraStackScreenProps } from '../../navigation/types';
+import { CameraImage, CameraModel } from '../../models/camera';
+import { CameraStackScreenProps, MapStackScreenProps } from '../../navigation/types';
 
-export default function CameraDetail({
-  navigation,
-  route,
-}: CameraStackScreenProps<'CameraDetail'>) {
-  const { camera } = route.params;
+
+export function CameraDetailMapScreen({ route }: MapStackScreenProps<'CameraDetail'>) {
+  return CameraDetail(route.params.camera);
+}
+
+export function CameraDetailCameraListScreen({ route }: CameraStackScreenProps<'CameraDetail'>) {
+  return CameraDetail(route.params.camera);
+}
+
+function CameraDetail(camera: CameraModel) {
   return(
   <SafeAreaView>
     <FlatList data={camera.images} keyExtractor={(item) => item.id} renderItem={ImageElement}/>
