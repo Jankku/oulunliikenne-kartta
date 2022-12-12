@@ -2,6 +2,7 @@ import React, { Dispatch } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Chip, Text } from 'react-native-paper';
 import { TrafficDisruptionSeverity } from '../../../models/trafficannouncement';
+import { RoadworkFilters } from '../../../screens/announcement/RoadWork';
 import { TrafficAnnouncementFilters } from '../../../screens/announcement/TrafficAnnouncement';
 
 const styles = StyleSheet.create({
@@ -26,18 +27,22 @@ const chips: Record<SeverityChipLabels, TrafficDisruptionSeverity[]> = {
 
 type SeveritySectionProps = {
   severityFilters: TrafficDisruptionSeverity[];
-  setFilters: Dispatch<React.SetStateAction<TrafficAnnouncementFilters>>;
+  // TODO: Change to correct type
+  setFilters:
+    | Dispatch<React.SetStateAction<TrafficAnnouncementFilters>>
+    | Dispatch<React.SetStateAction<RoadworkFilters>>;
 };
 
 export default function SeveritySection({ severityFilters, setFilters }: SeveritySectionProps) {
   const selectChip = (newSeverity: TrafficDisruptionSeverity[]) => {
-    setFilters((filters) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setFilters((filters: any) => {
       const prevSeverity = filters.severity;
 
-      if (prevSeverity.some((prev) => newSeverity.includes(prev))) {
+      if (prevSeverity.some((prev: TrafficDisruptionSeverity) => newSeverity.includes(prev))) {
         return {
           ...filters,
-          severity: prevSeverity.filter((s) => !newSeverity.includes(s)),
+          severity: prevSeverity.filter((s: TrafficDisruptionSeverity) => !newSeverity.includes(s)),
         };
       } else {
         prevSeverity.push(...newSeverity);

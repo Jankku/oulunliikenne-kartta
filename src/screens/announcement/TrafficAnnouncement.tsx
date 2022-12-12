@@ -1,14 +1,14 @@
 import TrafficAnnouncementCard from '../../components/announcement/TrafficAnnouncementCard';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 import { FlatList, View, StyleSheet } from 'react-native';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import Center from '../../components/util/Center';
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import type {
   AnnouncementStackNavigatorParamList,
   AnnouncementTabScreenProps,
 } from '../../navigation/types';
-import TrafficAnnouncementFilterDialog from '../../components/announcement/dialog/TrafficAnnouncementFilterDialog';
+import FilterDialog from '../../components/announcement/dialog/FilterDialog';
 import {
   TrafficDisruptionModeOfTransport,
   TrafficDisruptionSeverity,
@@ -17,7 +17,6 @@ import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
 import useAllTrafficAnnouncements, {
   AllTrafficAnnouncementsResult,
 } from '../../hooks/announcements/useAllTrafficAnnouncements';
-import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
 import { toErrorMessage } from '../../graphql/error';
 import {
   TrafficAnnouncementModel,
@@ -25,6 +24,9 @@ import {
 } from '../../models/trafficannouncement';
 import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
 import { StackNavigationProp } from '@react-navigation/stack';
+import TransportModeSection from '../../components/announcement/dialog/TransportModeSection';
+import SeveritySection from '../../components/announcement/dialog/SeveritySection';
+import globalStyles from '../../styles/styles';
 
 export type TrafficAnnouncementFilters = {
   modesOfTransport: TrafficDisruptionModeOfTransport[];
@@ -42,12 +44,6 @@ export default function TrafficAnnouncement({
 
   const result = useAllTrafficAnnouncements();
   const announcements = useMemo(() => filterAnnouncements(result, filters), [result, filters]);
-
-  useEffect(() => {
-    navigation.getParent()?.setOptions({
-      headerRight: <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
-    });
-  }, [navigation]);
 
   useUpdateTabTitle(navigation, `Häiriöt (${announcements.length})`, [announcements]);
 
@@ -92,12 +88,15 @@ export default function TrafficAnnouncement({
         />
       </View>
 
-      <TrafficAnnouncementFilterDialog
-        visible={filterDialogVisible}
-        toggleDialog={() => toggleFilterDialog()}
-        filters={filters}
-        setFilters={setFilters}
-      />
+      <FAB icon="filter" style={globalStyles.fab} onPress={() => toggleFilterDialog()} />
+
+      <FilterDialog visible={filterDialogVisible} toggleDialog={() => toggleFilterDialog()}>
+        <TransportModeSection
+          transportModeFilters={filters.modesOfTransport}
+          setFilters={setFilters}
+        />
+        <SeveritySection severityFilters={filters.severity} setFilters={setFilters} />
+      </FilterDialog>
     </>
   );
 }

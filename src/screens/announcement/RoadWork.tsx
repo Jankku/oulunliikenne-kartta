@@ -1,25 +1,33 @@
-import { Text, ActivityIndicator } from 'react-native-paper';
+import { Text, ActivityIndicator, FAB } from 'react-native-paper';
 import { FlatList, StyleSheet, View } from 'react-native';
 import RoadWorkCard from '../../components/announcement/RoadWorkCard';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
 import { AnnouncementTabScreenProps } from '../../navigation/types';
 import Center from '../../components/util/Center';
-import useAllRoadworks from '../../hooks/announcements/useAllRoadworks';
+import useAllRoadworks, { RoadworksResult } from '../../hooks/announcements/useAllRoadworks';
 import { toErrorMessage } from '../../graphql/error';
-import { useEffect, useState } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
+import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
+import FilterDialog from '../../components/announcement/dialog/FilterDialog';
+import SeveritySection from '../../components/announcement/dialog/SeveritySection';
+import globalStyles from '../../styles/styles';
+import { RoadworkModel } from '../../models/roadwork';
+import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
+
+export type RoadworkFilters = {
+  severity: TrafficDisruptionSeverity[];
+};
 
 export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roadwork'>) {
-  const [count, setCount] = useState(0);
+  const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
+  const [filters, setFilters] = useState<RoadworkFilters>({
+    severity: [],
+  });
   const result = useAllRoadworks();
+  const roadworks = useMemo(() => filterRoadworks(result, filters), [result, filters]);
 
-  useEffect(() => {
-    if (!result.loading && !result.error) {
-      setCount(result.data.length);
-    }
-  }, [result]);
-
-  useUpdateTabTitle(navigation, `Tietyöt (${count})`, [count]);
+  useUpdateTabTitle(navigation, `Tietyöt (${roadworks.length})`, [roadworks.length]);
 
   if (result.loading) {
     return (
@@ -40,19 +48,42 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
   }
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        contentContainerStyle={count === 0 ? styles.listContainer : undefined}
-        data={result.data}
-        ListEmptyComponent={TrafficAnnouncementListEmpty}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <RoadWorkCard text={item.description} onNavigateToMapPress={() => {}} />
-        )}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <FlatList
+          contentContainerStyle={roadworks.length === 0 ? styles.listContainer : undefined}
+          data={roadworks}
+          ListEmptyComponent={TrafficAnnouncementListEmpty}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <RoadWorkCard text={item.description} onNavigateToMapPress={() => {}} />
+          )}
+        />
+      </View>
+
+      <FAB icon="filter" style={globalStyles.fab} onPress={() => toggleFilterDialog()} />
+
+      <FilterDialog visible={filterDialogVisible} toggleDialog={() => toggleFilterDialog()}>
+        <SeveritySection severityFilters={filters.severity} setFilters={setFilters} />
+      </FilterDialog>
+    </>
   );
 }
+
+const filterRoadworks = (result: RoadworksResult, filters: RoadworkFilters): RoadworkModel[] => {
+  if (result.loading || result.error) return [];
+  if (isAllFiltersEmpty(filters)) return result.data;
+
+  const isCorrectSeverity = (work: RoadworkModel) => filters.severity.includes(work.severity);
+
+  let filtered = result.data;
+
+  if (isFilterNotEmpty(filters.severity)) {
+    filtered = filtered.filter(isCorrectSeverity);
+  }
+
+  return filtered;
+};
 
 const styles = StyleSheet.create({
   container: {

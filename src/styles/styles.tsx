@@ -5,6 +5,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
   },
+  fab: {
+    bottom: 0,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
+  },
   safeAreaView: {
     alignItems: 'center',
     flex: 1,

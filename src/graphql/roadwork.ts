@@ -1,4 +1,5 @@
 import { gql, useQuery as useApolloQuery } from '@apollo/client';
+import { TrafficDisruptionSeverity } from '../models/trafficannouncement';
 import { minutesToMs } from '../utils/time';
 import { QueryResult } from './result';
 
@@ -17,13 +18,13 @@ export interface RoadworkFeatureCollection
 export type RoadWorkSchema = {
   id: string;
   roadworkId: string;
-  severity: string;
+  severity: TrafficDisruptionSeverity;
   status: string;
   startTime: string;
   endTime: string;
   description: { fi: string };
   constructionWorkType: string;
-  roadMaintenanceType: [string];
+  roadMaintenanceType: string[];
   temporarySpeedLimit: number;
   subjectTypeOfWorks: string;
   geojson: RoadworkFeatureCollection;
