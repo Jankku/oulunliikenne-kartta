@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AnnouncementTabNavigatorParamList } from '../types';
-import RoadWork from '../../screens/announcement/RoadWork';
 import TrafficAnnouncement from '../../screens/announcement/TrafficAnnouncement';
+import Roadwork from '../../screens/announcement/RoadWork';
 
 export default function AnnouncementTabNavigator() {
   const Tab = createMaterialTopTabNavigator<AnnouncementTabNavigatorParamList>();
@@ -17,7 +17,7 @@ export default function AnnouncementTabNavigator() {
         component={TrafficAnnouncement}
         options={{ title: 'Häiriöt' }}
       />
-      <Tab.Screen name="RoadWork" component={RoadWork} options={{ title: 'Tietyöt' }} />
+      <Tab.Screen name="Roadwork" component={Roadwork} options={{ title: 'Tietyöt' }} />
     </Tab.Navigator>
   );
 }

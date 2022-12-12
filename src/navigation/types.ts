@@ -33,7 +33,7 @@ export type AnnouncementStackScreenProps<T extends keyof AnnouncementStackNaviga
 
 export type AnnouncementTabNavigatorParamList = {
   TrafficAnnouncement: undefined;
-  RoadWork: undefined;
+  Roadwork: undefined;
 };
 
 export type AnnouncementTabScreenProps<T extends keyof AnnouncementTabNavigatorParamList> =
