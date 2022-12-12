@@ -23,6 +23,7 @@ export type MapStackNavigatorParamList = {
 export type AnnouncementStackNavigatorParamList = {
   TabNavigator: undefined;
   AnnouncementMap: { announcementId: string };
+  RoadWorkMap: { roadworkId: string };
 };
 
 export type AnnouncementStackScreenProps<T extends keyof AnnouncementStackNavigatorParamList> =

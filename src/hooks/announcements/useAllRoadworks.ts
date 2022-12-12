@@ -1,12 +1,12 @@
 import { toOpaqueError } from '../../graphql/error';
 import { QueryHookResult } from '../../graphql/result';
-import { Result, useQuery } from '../../graphql/roadwork';
+import { AllResult, useAllQuery } from '../../graphql/roadwork';
 import { fromSchemaToModel, RoadworkModel } from '../../models/roadwork';
 
 export type RoadworksResult = QueryHookResult<RoadworkModel[]>;
 
 export default function useAllRoadworks(): RoadworksResult {
-  const { loading, data, error }: Result = useQuery();
+  const { loading, data, error }: AllResult = useAllQuery();
 
   if (!loading) {
     if (error) {

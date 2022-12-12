@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import RoadWorkMap from '../../screens/announcement/RoadWorkMap';
 import TrafficAnnouncementMap from '../../screens/announcement/TrafficAnnouncementMap';
 import CustomAppBar from '../CustomAppBar';
 import { AnnouncementStackNavigatorParamList } from '../types';
@@ -17,6 +18,7 @@ export default function AnnouncementStackNavigator() {
     >
       <Stack.Screen name="TabNavigator" component={AnnouncementTabNavigator} />
       <Stack.Screen name="AnnouncementMap" component={TrafficAnnouncementMap} />
+      <Stack.Screen name="RoadWorkMap" component={RoadWorkMap} />
     </Stack.Navigator>
   );
 }

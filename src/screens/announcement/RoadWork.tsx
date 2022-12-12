@@ -2,7 +2,10 @@ import { Text, ActivityIndicator, FAB } from 'react-native-paper';
 import { FlatList, StyleSheet, View } from 'react-native';
 import RoadWorkCard from '../../components/announcement/RoadWorkCard';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
-import { AnnouncementTabScreenProps } from '../../navigation/types';
+import {
+  AnnouncementStackNavigatorParamList,
+  AnnouncementTabScreenProps,
+} from '../../navigation/types';
 import Center from '../../components/util/Center';
 import useAllRoadworks, { RoadworksResult } from '../../hooks/announcements/useAllRoadworks';
 import { toErrorMessage } from '../../graphql/error';
@@ -14,6 +17,7 @@ import SeveritySection from '../../components/announcement/dialog/SeveritySectio
 import globalStyles from '../../styles/styles';
 import { RoadworkModel } from '../../models/roadwork';
 import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RoadworkFilters = {
   severity: TrafficDisruptionSeverity[];
@@ -56,7 +60,14 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
           ListEmptyComponent={TrafficAnnouncementListEmpty}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <RoadWorkCard text={item.description} onNavigateToMapPress={() => {}} />
+            <RoadWorkCard
+              text={item.description}
+              onNavigateToMapPress={() =>
+                navigation
+                  .getParent<StackNavigationProp<AnnouncementStackNavigatorParamList>>()
+                  ?.navigate('RoadWorkMap', { roadworkId: item.id })
+              }
+            />
           )}
         />
       </View>
