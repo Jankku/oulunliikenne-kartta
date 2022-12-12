@@ -3,7 +3,7 @@ import { ActivityIndicator, FAB, Text } from 'react-native-paper';
 import { FlatList, View, StyleSheet } from 'react-native';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import Center from '../../components/util/Center';
-import { useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import type {
   AnnouncementStackNavigatorParamList,
   AnnouncementTabScreenProps,
@@ -27,6 +27,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import TransportModeSection from '../../components/announcement/dialog/TransportModeSection';
 import SeveritySection from '../../components/announcement/dialog/SeveritySection';
 import globalStyles from '../../styles/styles';
+import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
 export type TrafficAnnouncementFilters = {
   modesOfTransport: TrafficDisruptionModeOfTransport[];
@@ -46,6 +48,12 @@ export default function TrafficAnnouncement({
   const announcements = useMemo(() => filterAnnouncements(result, filters), [result, filters]);
 
   useUpdateTabTitle(navigation, `Häiriöt (${announcements.length})`, [announcements]);
+
+  useFocusEffect(() => {
+    navigation.getParent()?.setOptions({
+      headerRight: <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
+    });
+  });
 
   if (result.loading) {
     return (
@@ -87,8 +95,6 @@ export default function TrafficAnnouncement({
           )}
         />
       </View>
-
-      <FAB icon="filter" style={globalStyles.fab} onPress={() => toggleFilterDialog()} />
 
       <FilterDialog visible={filterDialogVisible} toggleDialog={() => toggleFilterDialog()}>
         <TransportModeSection

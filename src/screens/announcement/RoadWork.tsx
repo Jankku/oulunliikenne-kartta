@@ -1,4 +1,4 @@
-import { Text, ActivityIndicator, FAB } from 'react-native-paper';
+import { Text, ActivityIndicator } from 'react-native-paper';
 import { FlatList, StyleSheet, View } from 'react-native';
 import RoadWorkCard from '../../components/announcement/RoadWorkCard';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
@@ -18,12 +18,14 @@ import globalStyles from '../../styles/styles';
 import { RoadworkModel } from '../../models/roadwork';
 import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
 import { StackNavigationProp } from '@react-navigation/stack';
+import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
 export type RoadworkFilters = {
   severity: TrafficDisruptionSeverity[];
 };
 
-export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roadwork'>) {
+export default function Roadwork({ navigation, route }: AnnouncementTabScreenProps<'Roadwork'>) {
   const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
   const [filters, setFilters] = useState<RoadworkFilters>({
     severity: [],
@@ -32,6 +34,12 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
   const roadworks = useMemo(() => filterRoadworks(result, filters), [result, filters]);
 
   useUpdateTabTitle(navigation, `Tietyöt (${roadworks.length})`, [roadworks.length]);
+
+  useFocusEffect(() => {
+    navigation.getParent()?.setOptions({
+      headerRight: <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
+    });
+  });
 
   if (result.loading) {
     return (
@@ -71,8 +79,6 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
           )}
         />
       </View>
-
-      <FAB icon="filter" style={globalStyles.fab} onPress={() => toggleFilterDialog()} />
 
       <FilterDialog visible={filterDialogVisible} toggleDialog={() => toggleFilterDialog()}>
         <SeveritySection severityFilters={filters.severity} setFilters={setFilters} />
