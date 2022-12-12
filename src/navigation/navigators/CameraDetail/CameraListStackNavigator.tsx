@@ -18,7 +18,9 @@ export default function CameraListStackNavigator() {
       <Stack.Screen
         name="CameraDetail"
         component={CameraDetail}
-        options={{ title: 'Kamerakuvat' }}
+        options={(props) => {
+          return { title: props.route.params.camera.name };
+        }}
       />
     </Stack.Navigator>
   );
