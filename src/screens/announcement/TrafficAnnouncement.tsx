@@ -1,9 +1,9 @@
 import TrafficAnnouncementCard from '../../components/announcement/TrafficAnnouncementCard';
-import { ActivityIndicator, FAB, Text } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import { FlatList, View, StyleSheet } from 'react-native';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import Center from '../../components/util/Center';
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useMemo, useReducer, useState } from 'react';
 import type {
   AnnouncementStackNavigatorParamList,
   AnnouncementTabScreenProps,
@@ -26,7 +26,6 @@ import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannounce
 import { StackNavigationProp } from '@react-navigation/stack';
 import TransportModeSection from '../../components/announcement/dialog/TransportModeSection';
 import SeveritySection from '../../components/announcement/dialog/SeveritySection';
-import globalStyles from '../../styles/styles';
 import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
 import { useFocusEffect } from '@react-navigation/native';
 

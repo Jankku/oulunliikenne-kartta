@@ -14,7 +14,6 @@ import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficA
 import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
 import FilterDialog from '../../components/announcement/dialog/FilterDialog';
 import SeveritySection from '../../components/announcement/dialog/SeveritySection';
-import globalStyles from '../../styles/styles';
 import { RoadworkModel } from '../../models/roadwork';
 import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannouncement';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -25,7 +24,7 @@ export type RoadworkFilters = {
   severity: TrafficDisruptionSeverity[];
 };
 
-export default function Roadwork({ navigation, route }: AnnouncementTabScreenProps<'Roadwork'>) {
+export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roadwork'>) {
   const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
   const [filters, setFilters] = useState<RoadworkFilters>({
     severity: [],
