@@ -9,8 +9,9 @@ import TrafficFluencyLayer from '../components/map/TrafficFluencyLayer';
 // @ts-ignore
 import parkingIcon from '../components/map/marker/parking.png';
 import { Text } from 'react-native-paper';
+import { MapStackScreenProps } from '../navigation/types';
 
-export default function Map() {
+export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
   return (
     <SafeAreaView>
       <MapView
@@ -23,7 +24,9 @@ export default function Map() {
         }}
       >
         <TrafficFluencyLayer />
-        <TrafficCameraLayer />
+        <TrafficCameraLayer
+          onItemSelect={(selected) => navigation.navigate('CameraDetail', { camera: selected })}
+        />
         <ParkingLayer />
       </MapView>
       <MapInfoBox>
@@ -52,3 +55,4 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
   },
 });
+
