@@ -3,6 +3,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { CameraModel } from '../models/camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ParkingModel } from '../models/parking';
 
 export type BottomNavStackParamList = {
   Map: undefined;
@@ -58,6 +59,16 @@ export type MapStackNavigatorParamList = {
 
 export type MapStackScreenProps<T extends keyof MapStackNavigatorParamList> = CompositeScreenProps<
   StackScreenProps<MapStackNavigatorParamList, T>,
+  BottomNavScreenProps<keyof BottomNavStackParamList>
+>;
+
+export type ParkingListStackNavigatorParamList = {
+  ParkingList: undefined;
+  ParkingDetail: { parking: ParkingModel };
+};
+
+export type ParkingStackScreenProps<T extends keyof ParkingListStackNavigatorParamList> = CompositeScreenProps<
+  StackScreenProps<ParkingListStackNavigatorParamList, T>,
   BottomNavScreenProps<keyof BottomNavStackParamList>
 >;
 

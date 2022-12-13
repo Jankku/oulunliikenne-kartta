@@ -9,14 +9,7 @@ import AnnouncementStackNavigator from './navigators/AnnouncementStackNavigator'
 import CameraListStackNavigator from './navigators/CameraDetail/CameraListStackNavigator';
 import MapStackNavigator from './navigators/MapStackNavigator';
 import AboutStackNavigator from './navigators/AboutStackNavigator';
-
-function ParkingHalls() {
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Text>Parkkipaikat</Text>
-    </SafeAreaView>
-  );
-}
+import ParkingListStackNavigator from './navigators/ParkingStackNavigator';
 
 function BottomNav() {
   const Tab = createMaterialBottomTabNavigator<BottomNavStackParamList>();
@@ -69,7 +62,7 @@ function BottomNav() {
         />
         <Tab.Screen
           name="ParkingHalls"
-          component={ParkingHalls}
+          component={ParkingListStackNavigator}
           options={{
             tabBarLabel: 'Parkkipaikat',
           }}
