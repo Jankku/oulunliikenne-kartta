@@ -18,16 +18,14 @@ export default function FilterDialog({
   };
 
   return (
-    <View>
-      <Portal>
-        <Dialog visible={visible}>
-          <Dialog.Title>Suodata</Dialog.Title>
-          <Dialog.Content>{children}</Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={onOkClick}>Ok</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-    </View>
+    <Portal>
+      <Dialog visible={visible} onDismiss={onOkClick}>
+        <Dialog.Title>Suodata</Dialog.Title>
+        <Dialog.Content>{children}</Dialog.Content>
+        <Dialog.Actions>
+          <Button onPress={onOkClick}>Ok</Button>
+        </Dialog.Actions>
+      </Dialog>
+    </Portal>
   );
 }
