@@ -13,6 +13,10 @@ export type SchemaParking = {
   lon: number;
   maxCapacity: number;
   spacesAvailable: number;
+  pricing: {
+    title: { fi: string };
+    value: { fi: string };
+  }[];
 };
 
 export type Result = QueryResult<SchemaType>;
@@ -35,6 +39,14 @@ const QUERY = gql`
       lon
       maxCapacity
       spacesAvailable
+      pricing {
+        title {
+          fi
+        }
+        value {
+          fi
+        }
+      }
     }
   }
 `;
