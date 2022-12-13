@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { CameraDetailMapScreen } from '../../screens/Cameras/CameraDetail';
 import Map from '../../screens/Map';
+import { ParkingDetailMapScreen } from '../../screens/parking/ParkingDetail';
 import CustomAppBar from '../CustomAppBar';
 import { MapStackNavigatorParamList } from '../types';
 
@@ -22,6 +23,14 @@ export default function MapStackNavigator() {
         options={(props) => {
           // eslint-disable-next-line react/prop-types
           return { title: props.route.params.camera.name };
+        }}
+      />
+      <Stack.Screen
+        name="ParkingDetail"
+        component={ParkingDetailMapScreen}
+        options={(props) => {
+          // eslint-disable-next-line react/prop-types
+          return { title: props.route.params.parking.name };
         }}
       />
     </Stack.Navigator>

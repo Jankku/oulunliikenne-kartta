@@ -55,6 +55,7 @@ export type CameraStackScreenProps<T extends keyof CameraListStackNavigatorParam
 export type MapStackNavigatorParamList = {
   MapScreen: undefined;
   CameraDetail: { camera: CameraModel };
+  ParkingDetail: { parking: ParkingModel };
 };
 
 export type MapStackScreenProps<T extends keyof MapStackNavigatorParamList> = CompositeScreenProps<

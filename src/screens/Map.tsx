@@ -36,7 +36,12 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
         />
       ),
       Liikenteensujuvuus: <TrafficFluencyLayer key={'layer2'} />,
-      Parkkihallit: <ParkingLayer key={'layer3'} />,
+      Parkkihallit: (
+        <ParkingLayer
+          key={'layer3'}
+          onItemSelect={(selected) => navigation.navigate('ParkingDetail', { parking: selected })}
+        />
+      ),
     }),
     [navigation]
   );
