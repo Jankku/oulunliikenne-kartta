@@ -1,7 +1,8 @@
 import type { CompositeScreenProps } from '@react-navigation/core';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
 import { CameraModel } from '../models/camera';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type BottomNavStackParamList = {
   Map: undefined;
@@ -16,11 +17,6 @@ export type BottomNavScreenProps<T extends keyof BottomNavStackParamList> = Nati
   T
 >;
 
-export type MapStackNavigatorParamList = {
-  MapScreen: undefined;
-  CameraDetail: { camera: CameraModel };
-};
-
 export type AnnouncementStackNavigatorParamList = {
   TabNavigator: undefined;
   AnnouncementMap: { announcementId: string };
@@ -29,7 +25,7 @@ export type AnnouncementStackNavigatorParamList = {
 
 export type AnnouncementStackScreenProps<T extends keyof AnnouncementStackNavigatorParamList> =
   CompositeScreenProps<
-    NativeStackScreenProps<AnnouncementStackNavigatorParamList, T>,
+    StackScreenProps<AnnouncementStackNavigatorParamList, T>,
     BottomNavScreenProps<keyof BottomNavStackParamList>
   >;
 
@@ -51,15 +47,19 @@ export type CameraListStackNavigatorParamList = {
 
 export type CameraStackScreenProps<T extends keyof CameraListStackNavigatorParamList> =
   CompositeScreenProps<
-    NativeStackScreenProps<CameraListStackNavigatorParamList, T>,
+    StackScreenProps<CameraListStackNavigatorParamList, T>,
     BottomNavScreenProps<keyof BottomNavStackParamList>
   >;
 
-export type MapStackScreenProps<T extends keyof MapStackNavigatorParamList> =
-  CompositeScreenProps<
-    NativeStackScreenProps<MapStackNavigatorParamList, T>,
-    BottomNavScreenProps<keyof BottomNavStackParamList>
-  >;
+export type MapStackNavigatorParamList = {
+  MapScreen: undefined;
+  CameraDetail: { camera: CameraModel };
+};
+
+export type MapStackScreenProps<T extends keyof MapStackNavigatorParamList> = CompositeScreenProps<
+  StackScreenProps<MapStackNavigatorParamList, T>,
+  BottomNavScreenProps<keyof BottomNavStackParamList>
+>;
 
 export type AboutStackNavigatorParamList = {
   AboutScreen: undefined;

@@ -20,6 +20,7 @@ export default function MapStackNavigator() {
         name="CameraDetail"
         component={CameraDetailMapScreen}
         options={(props) => {
+          // eslint-disable-next-line react/prop-types
           return { title: props.route.params.camera.name };
         }}
       />

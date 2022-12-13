@@ -10,8 +10,43 @@ import TrafficFluencyLayer from '../components/map/TrafficFluencyLayer';
 import parkingIcon from '../components/map/marker/parking.png';
 import { Text } from 'react-native-paper';
 import { MapStackScreenProps } from '../navigation/types';
+import { ReactNode, useEffect, useMemo, useReducer, useState } from 'react';
+import AppbarActionIcon from '../components/appbar/AppbarActionIcon';
+import FilterDialog from '../components/announcement/dialog/FilterDialog';
+import MapLayerSection from '../components/announcement/dialog/MapLayerSection';
+
+export type MapLayerLabel = 'Liikenteensujuvuus' | 'Kamerat' | 'Parkkihallit';
+
+export type MapFilters = {
+  layers: MapLayerLabel[];
+};
 
 export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
+  const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
+  const [filters, setFilters] = useState<MapFilters>({
+    layers: ['Kamerat', 'Liikenteensujuvuus', 'Parkkihallit'],
+  });
+
+  const mapLayers: Record<MapLayerLabel, ReactNode> = useMemo(
+    () => ({
+      Kamerat: (
+        <TrafficCameraLayer
+          key={'layer1'}
+          onItemSelect={(selected) => navigation.navigate('CameraDetail', { camera: selected })}
+        />
+      ),
+      Liikenteensujuvuus: <TrafficFluencyLayer key={'layer2'} />,
+      Parkkihallit: <ParkingLayer key={'layer3'} />,
+    }),
+    [navigation]
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
+    });
+  }, [navigation]);
+
   return (
     <SafeAreaView>
       <MapView
@@ -23,12 +58,13 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
           longitudeDelta: 0.1,
         }}
       >
-        <TrafficFluencyLayer />
-        <TrafficCameraLayer
-          onItemSelect={(selected) => navigation.navigate('CameraDetail', { camera: selected })}
-        />
-        <ParkingLayer />
+        {Object.entries(mapLayers).map(([label, layer]) => {
+          if (filters.layers.includes(label as MapLayerLabel)) {
+            return layer;
+          }
+        })}
       </MapView>
+
       <MapInfoBox>
         <Text variant="labelMedium" style={styles.infoBoxTitle}>
           Liikenne
@@ -42,6 +78,10 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
         <MapInfoBoxItem text="Kelikamera" icon="camera" iconColor="black" />
         <MapInfoBoxItem text="Parkkihalli" icon={parkingIcon} />
       </MapInfoBox>
+
+      <FilterDialog visible={filterDialogVisible} toggleDialog={toggleFilterDialog}>
+        <MapLayerSection layers={filters.layers} setFilters={setFilters} />
+      </FilterDialog>
     </SafeAreaView>
   );
 }
@@ -55,4 +95,3 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
   },
 });
-
