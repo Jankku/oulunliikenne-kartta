@@ -1,5 +1,5 @@
 import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { LatLng } from 'react-native-maps';
 import TrafficAnnouncementDetourLayer from '../../components/announcement/map/TrafficAnnouncementDetourLayer';
 import MapInfoBox from '../../components/map/infobox/MapInfoBox';
 import TrafficAnnouncementPositionLayer from '../../components/announcement/map/TrafficAnnouncementPositionLayer';
@@ -7,16 +7,55 @@ import useTrafficAnnouncement from '../../hooks/announcements/useTrafficAnnounce
 import { AnnouncementStackScreenProps } from '../../navigation/types';
 import MapInfoBoxItem from '../../components/map/infobox/MapInfoBoxItem';
 import { Text } from 'react-native-paper';
+import { createRef } from 'react';
+
+const getArrayDepth = (array: unknown): number => {
+  return Array.isArray(array) ? 1 + Math.max(0, ...array.map(getArrayDepth)) : 0;
+};
+
+// TODO: Fix these type errors
+const normalizeDepth = (
+  value: GeoJSON.Position | GeoJSON.Position[] | GeoJSON.Position[][] | GeoJSON.Position[][][]
+): GeoJSON.Position[][] => {
+  if (!Array.isArray(value)) return [value];
+
+  const depth = getArrayDepth(value);
+  if (depth === 1) {
+    return [value];
+  } else if (depth === 2) {
+    return value;
+  } else {
+    return value.flat(1);
+  }
+};
 
 export default function TrafficAnnouncementMap({
   route,
 }: AnnouncementStackScreenProps<'AnnouncementMap'>) {
+  const map = createRef<MapView>();
   const { announcementId } = route.params;
   const announcement = useTrafficAnnouncement(announcementId);
+
+  const focusAnnouncement = () => {
+    if (!announcement.loading && !announcement.error) {
+      const feature = announcement.data.geojson.features[0];
+      if (feature.geometry.type === 'GeometryCollection') return;
+
+      const coordinates = normalizeDepth(feature.geometry.coordinates);
+      const latLngArray: LatLng[] = coordinates.map((coord) => ({
+        latitude: coord[1] as unknown as number,
+        longitude: coord[0] as unknown as number,
+      }));
+
+      map.current?.fitToCoordinates(latLngArray, { animated: true });
+    }
+  };
 
   return (
     <SafeAreaView>
       <MapView
+        ref={map}
+        onMapLoaded={() => focusAnnouncement()}
         style={styles.map}
         initialRegion={{
           latitude: 65.01,
