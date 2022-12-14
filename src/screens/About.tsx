@@ -2,6 +2,9 @@ import { Image, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Title, Text } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import logo from '../../assets/icon.png';
 
 export default function About() {
   const openGitHub = async () => {
@@ -14,7 +17,7 @@ export default function About() {
 
   return (
     <SafeAreaView style={styles.about}>
-      <Image style={styles.image} source={{ uri: 'https://placekitten.com/g/400/250' }} />
+      <Image style={styles.image} source={logo} />
       <Title style={styles.title}>Oulun Liikennekartta</Title>
       <Text style={styles.text}>Lyhyt kuvaus teksti sovelluksesta</Text>
       <View style={styles.buttonContainer}>
