@@ -23,6 +23,7 @@ export default function ParkingListStackNavigator() {
         name="ParkingDetail"
         component={ParkingDetailParkingListScreen}
         options={(props) => {
+          // eslint-disable-next-line react/prop-types
           return { title: props.route.params.parking.name };
         }}
       />

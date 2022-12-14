@@ -3,14 +3,16 @@ import { Card, Title, Paragraph } from 'react-native-paper';
 import { ParkingModel, ParkingPricing } from '../../models/parking';
 import MapView, { Region } from 'react-native-maps';
 import ParkingMarker from '../../components/map/marker/ParkingMarker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MapStackScreenProps, ParkingStackScreenProps } from '../../navigation/types';
 
-export function ParkingDetailMapScreen({ route } /*: MapStackScreenProps<'CameraDetail'>*/) {
+export function ParkingDetailMapScreen({ route }: MapStackScreenProps<'ParkingDetail'>) {
   return ParkingDetail(route.params.parking);
 }
 
-export function ParkingDetailParkingListScreen(
-  { route } /*: CameraStackScreenProps<'CameraDetail'>*/
-) {
+export function ParkingDetailParkingListScreen({
+  route,
+}: ParkingStackScreenProps<'ParkingDetail'>) {
   return ParkingDetail(route.params.parking);
 }
 
@@ -24,7 +26,6 @@ function ParkingDetail(parking: ParkingModel) {
   return (
     <View>
       <Card>
-        <Card.Title title={parking.name} />
         <Card.Content>
           <View style={mapStyle.container}>
             <MapView
@@ -39,15 +40,28 @@ function ParkingDetail(parking: ParkingModel) {
             </MapView>
           </View>
         </Card.Content>
-        {parking.pricing.length > 0 && (
-          <FlatList
-            data={parking.pricing}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={PricingElement}
-          />
-        )}
+        <FlatList
+          ListEmptyComponent={PricingEmptyComponent}
+          data={parking.pricing}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={PricingElement}
+        />
       </Card>
     </View>
+  );
+}
+
+function PricingEmptyComponent() {
+  return (
+    <Card>
+      <Card.Title
+        title="Ei hintatietoja saatavilla"
+        left={(props) => (
+          <MaterialCommunityIcons name={'exclamation-thick'} color={'red'} {...props} />
+        )}
+        titleVariant="titleLarge"
+      />
+    </Card>
   );
 }
 
