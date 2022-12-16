@@ -6,6 +6,7 @@ export type RoadworkModel = {
   description: string;
   severity: TrafficDisruptionSeverity;
   geojson: RoadworkFeatureCollection;
+  speedlimit: number;
 };
 
 export const fromSchemaToModel = (roadwork: RoadWorkSchema): RoadworkModel => {
@@ -14,5 +15,6 @@ export const fromSchemaToModel = (roadwork: RoadWorkSchema): RoadworkModel => {
     description: roadwork.description.fi,
     severity: roadwork.severity,
     geojson: roadwork.geojson,
+    speedlimit: roadwork.temporarySpeedLimit,
   };
 };

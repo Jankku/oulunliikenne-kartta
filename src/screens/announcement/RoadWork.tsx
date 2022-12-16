@@ -68,7 +68,8 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <RoadWorkCard
-              text={item.description}
+              description={item.description}
+              speedlimit={item.speedlimit}
               onNavigateToMapPress={() =>
                 navigation
                   .getParent<StackNavigationProp<AnnouncementStackNavigatorParamList>>()

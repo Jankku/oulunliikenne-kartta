@@ -61,13 +61,11 @@ export const GET_ALL_ROADWORKS = gql`
       id
       roadworkId
       severity
-      status
-      startTime
-      endTime
       description {
         fi
       }
       geojson
+      temporarySpeedLimit
     }
   }
 `;
@@ -78,9 +76,6 @@ export const GET_ROADWORK = gql`
       id
       roadworkId
       severity
-      status
-      startTime
-      endTime
       description {
         fi
       }

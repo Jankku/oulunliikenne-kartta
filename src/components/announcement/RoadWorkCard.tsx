@@ -14,13 +14,18 @@ const styles = StyleSheet.create({
 });
 
 type RoadWorkCardProps = {
-  text: string;
+  description: string;
+  speedlimit: number;
   onNavigateToMapPress: () => void;
 };
 
-export default function RoadWorkCard({ text, onNavigateToMapPress }: RoadWorkCardProps) {
+export default function RoadWorkCard({
+  description,
+  speedlimit,
+  onNavigateToMapPress,
+}: RoadWorkCardProps) {
   const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
-  const [title, description] = getTitleAndDescription(text);
+  const [title, newDescription] = formatDescription(description, speedlimit);
 
   return (
     <Card>
@@ -28,7 +33,7 @@ export default function RoadWorkCard({ text, onNavigateToMapPress }: RoadWorkCar
         <Card.Title
           title={title}
           titleNumberOfLines={0}
-          subtitle={showDescription ? description : undefined}
+          subtitle={showDescription ? newDescription : undefined}
           subtitleNumberOfLines={0}
           left={(props) => <MaterialCommunityIcons name="traffic-cone" color={'red'} {...props} />}
           right={(props) => (
@@ -53,7 +58,14 @@ export default function RoadWorkCard({ text, onNavigateToMapPress }: RoadWorkCar
   );
 }
 
-const getTitleAndDescription = (text: string): [title: string, description: string] => {
-  const arr = text.split('\n');
-  return [arr[0], arr.slice(1, arr.length).join('\n')];
+const formatDescription = (
+  text: string,
+  speedlimit: number
+): [title: string, description: string] => {
+  const splitDescription = text.split('\n');
+  const description = [
+    splitDescription.slice(1, splitDescription.length).join('\n'),
+    `\nNopeusrajoitus: ${speedlimit ?? 'Ei tietoa'}`,
+  ];
+  return [splitDescription[0], description.toString()];
 };
