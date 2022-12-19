@@ -1,6 +1,6 @@
-import { View, FlatList, ListRenderItemInfo, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
-import { ParkingModel, ParkingPricing } from '../../models/parking';
+import { ParkingModel } from '../../models/parking';
 import MapView, { Region } from 'react-native-maps';
 import ParkingMarker from '../../components/map/marker/ParkingMarker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -24,12 +24,12 @@ function ParkingDetail(parking: ParkingModel) {
   };
 
   return (
-    <View>
+    <ScrollView>
       <Card>
         <Card.Content>
-          <View style={mapStyle.container}>
+          <View style={styles.container}>
             <MapView
-              style={mapStyle.map}
+              style={styles.map}
               region={region}
               zoomEnabled={false}
               rotateEnabled={false}
@@ -40,43 +40,38 @@ function ParkingDetail(parking: ParkingModel) {
             </MapView>
           </View>
         </Card.Content>
-        <FlatList
-          ListEmptyComponent={PricingEmptyComponent}
-          data={parking.pricing}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={PricingElement}
-        />
-      </Card>
-    </View>
-  );
-}
+        <Card>
+          <Card.Content>
+            <Title>{`Kapasiteetti: ${parking.maxCapacity}`}</Title>
+          </Card.Content>
+        </Card>
 
-function PricingEmptyComponent() {
-  return (
-    <Card>
-      <Card.Title
-        title="Ei hintatietoja saatavilla"
-        left={(props) => (
-          <MaterialCommunityIcons name={'exclamation-thick'} color={'red'} {...props} />
+        {parking.pricing.length > 0 ? (
+          parking.pricing.map((p, i) => (
+            <Card key={i}>
+              <Card.Content>
+                <Title>{p.title}</Title>
+                <Paragraph>{p.description}</Paragraph>
+              </Card.Content>
+            </Card>
+          ))
+        ) : (
+          <Card>
+            <Card.Title
+              title="Ei hintatietoja saatavilla"
+              left={() => (
+                <MaterialCommunityIcons name={'exclamation-thick'} color={'red'} size={34} />
+              )}
+              titleVariant="titleLarge"
+            />
+          </Card>
         )}
-        titleVariant="titleLarge"
-      />
-    </Card>
+      </Card>
+    </ScrollView>
   );
 }
 
-function PricingElement<T extends ParkingPricing>(info: ListRenderItemInfo<T>): JSX.Element {
-  return (
-    <Card>
-      <Card.Content key={info.index}>
-        <Title>{info.item.title}</Title>
-        <Paragraph>{info.item.description}</Paragraph>
-      </Card.Content>
-    </Card>
-  );
-}
-
-const mapStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     borderRadius: 16,
     height: 250,
