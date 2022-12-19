@@ -22,7 +22,7 @@ export type CameraImage = {
 export function fromSchemaToModel(item: SchemaCamera): CameraModel {
   return {
     cameraId: item.cameraId,
-    name: item.name,
+    name: item.names.fi,
     coordinates: { latitude: item.lat, longitude: item.lon },
     images: item.presets.map((preset) => {
       return {

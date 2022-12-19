@@ -9,6 +9,7 @@ import { QueryResult } from './result';
 export type SchemaCamera = {
   cameraId: string;
   name: string;
+  names: { fi: string };
   lat: number;
   lon: number;
   presets: {
@@ -41,6 +42,9 @@ const GET_CAMERAS = gql`
     cameras {
       cameraId
       name
+      names {
+        fi
+      }
       lat
       lon
       presets {
