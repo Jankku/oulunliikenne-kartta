@@ -68,11 +68,18 @@ export type ParkingListStackNavigatorParamList = {
   ParkingDetail: { parking: ParkingModel };
 };
 
-export type ParkingStackScreenProps<T extends keyof ParkingListStackNavigatorParamList> = CompositeScreenProps<
-  StackScreenProps<ParkingListStackNavigatorParamList, T>,
-  BottomNavScreenProps<keyof BottomNavStackParamList>
->;
+export type ParkingStackScreenProps<T extends keyof ParkingListStackNavigatorParamList> =
+  CompositeScreenProps<
+    StackScreenProps<ParkingListStackNavigatorParamList, T>,
+    BottomNavScreenProps<keyof BottomNavStackParamList>
+  >;
 
 export type AboutStackNavigatorParamList = {
   AboutScreen: undefined;
 };
+
+export type AboutStackScreenProps<T extends keyof AboutStackNavigatorParamList> =
+  CompositeScreenProps<
+    StackScreenProps<AboutStackNavigatorParamList, T>,
+    BottomNavScreenProps<keyof BottomNavStackParamList>
+  >;

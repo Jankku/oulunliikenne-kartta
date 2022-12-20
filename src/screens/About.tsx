@@ -5,8 +5,25 @@ import * as WebBrowser from 'expo-web-browser';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import logo from '../../assets/icon.png';
+import { AboutStackScreenProps } from '../navigation/types';
+import { useEffect } from 'react';
+import AppbarActionIcon from '../components/appbar/AppbarActionIcon';
+import { useThemeProvider } from '../providers/ThemeProvider';
 
-export default function About() {
+export default function About({ navigation }: AboutStackScreenProps<'AboutScreen'>) {
+  const { isDark, toggleTheme } = useThemeProvider();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: (
+        <AppbarActionIcon
+          icon={isDark ? 'white-balance-sunny' : 'moon-waxing-crescent'}
+          onPress={() => toggleTheme()}
+        />
+      ),
+    });
+  }, [isDark, navigation, toggleTheme]);
+
   const openGitHub = async () => {
     try {
       await WebBrowser.openBrowserAsync('https://github.com/Jankku/oulunliikenne-kartta');
