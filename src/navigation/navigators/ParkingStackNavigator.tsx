@@ -14,11 +14,7 @@ export default function ParkingListStackNavigator() {
         header: (props) => <CustomAppBar {...props} />,
       }}
     >
-      <Stack.Screen
-        name="ParkingList"
-        component={ParkingList}
-        options={{ title: 'Parkkipaikat' }}
-      />
+      <Stack.Screen name="ParkingList" component={ParkingList} options={{ title: 'Pysäköinti' }} />
       <Stack.Screen
         name="ParkingDetail"
         component={ParkingDetailParkingListScreen}

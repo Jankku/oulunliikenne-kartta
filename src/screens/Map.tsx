@@ -8,12 +8,14 @@ import TrafficFluencyLayer from '../components/map/TrafficFluencyLayer';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import parkingIcon from '../components/map/marker/parking.png';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { MapStackScreenProps } from '../navigation/types';
 import { ReactNode, useEffect, useMemo, useReducer, useState } from 'react';
 import AppbarActionIcon from '../components/appbar/AppbarActionIcon';
 import FilterDialog from '../components/announcement/dialog/FilterDialog';
 import MapLayerSection from '../components/announcement/dialog/MapLayerSection';
+import { darkMapStyle, lightMapStyle } from '../styles/mapstyle';
+import type { CustomTheme } from '../styles/theme';
 
 export type MapLayerLabel = 'Liikenteensujuvuus' | 'Kamerat' | 'Parkkihallit';
 
@@ -22,6 +24,7 @@ export type MapFilters = {
 };
 
 export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
+  const theme: CustomTheme = useTheme();
   const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
   const [filters, setFilters] = useState<MapFilters>({
     layers: ['Kamerat', 'Liikenteensujuvuus', 'Parkkihallit'],
@@ -55,6 +58,7 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
   return (
     <SafeAreaView>
       <MapView
+        customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
         style={styles.map}
         initialRegion={{
           latitude: 65.01,
@@ -74,13 +78,29 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
         <Text variant="labelMedium" style={styles.infoBoxTitle}>
           Liikenne
         </Text>
-        <MapInfoBoxItem text="Normaali" icon="circle" iconColor="rgba(0, 120, 40, 0.7)" />
-        <MapInfoBoxItem text="Pieni ruuhka" icon="circle" iconColor="rgba(230, 160, 0, 0.7)" />
-        <MapInfoBoxItem text="Iso ruuhka" icon="circle" iconColor="rgba(200, 0, 0, 0.7)" />
+        <MapInfoBoxItem
+          text="Normaali"
+          icon="circle"
+          iconColor={theme.colors.trafficFluency.green}
+        />
+        <MapInfoBoxItem
+          text="Pieni ruuhka"
+          icon="circle"
+          iconColor={theme.colors.trafficFluency.orange}
+        />
+        <MapInfoBoxItem
+          text="Iso ruuhka"
+          icon="circle"
+          iconColor={theme.colors.trafficFluency.red}
+        />
         <Text variant="labelMedium" style={styles.infoBoxTitle}>
           Muut
         </Text>
-        <MapInfoBoxItem text="Kelikamera" icon="camera" iconColor="black" />
+        <MapInfoBoxItem
+          text="Kelikamera"
+          icon="camera"
+          iconColor={theme.dark ? 'white' : 'black'}
+        />
         <MapInfoBoxItem text="Parkkihalli" icon={parkingIcon} />
       </MapInfoBox>
 

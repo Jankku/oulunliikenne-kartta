@@ -1,4 +1,4 @@
-import { Button, Card } from 'react-native-paper';
+import { Button, Card, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useReducer } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
@@ -24,6 +24,7 @@ export default function RoadWorkCard({
   speedlimit,
   onNavigateToMapPress,
 }: RoadWorkCardProps) {
+  const theme = useTheme();
   const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
   const [title, newDescription] = formatDescription(description, speedlimit);
 
@@ -35,10 +36,17 @@ export default function RoadWorkCard({
           titleNumberOfLines={0}
           subtitle={showDescription ? newDescription : undefined}
           subtitleNumberOfLines={0}
-          left={(props) => <MaterialCommunityIcons name="traffic-cone" color={'red'} {...props} />}
+          left={(props) => (
+            <MaterialCommunityIcons
+              name="traffic-cone"
+              color={theme.colors.announcement.red}
+              {...props}
+            />
+          )}
           right={(props) => (
             <MaterialCommunityIcons
               name={showDescription ? 'chevron-up' : 'chevron-down'}
+              color={theme.colors.onPrimaryContainer}
               {...props}
             />
           )}

@@ -1,10 +1,12 @@
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import { Card, Title, Paragraph, useTheme } from 'react-native-paper';
 import { ParkingModel } from '../../models/parking';
 import MapView, { Region } from 'react-native-maps';
 import ParkingMarker from '../../components/map/marker/ParkingMarker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MapStackScreenProps, ParkingStackScreenProps } from '../../navigation/types';
+import { darkMapStyle, lightMapStyle } from '../../styles/mapstyle';
+import type { CustomTheme } from '../../styles/theme';
 
 export function ParkingDetailMapScreen({ route }: MapStackScreenProps<'ParkingDetail'>) {
   return ParkingDetail(route.params.parking);
@@ -17,6 +19,7 @@ export function ParkingDetailParkingListScreen({
 }
 
 function ParkingDetail(parking: ParkingModel) {
+  const theme: CustomTheme = useTheme();
   const region: Region = {
     ...parking.coordinates,
     latitudeDelta: 0.003,
@@ -30,6 +33,7 @@ function ParkingDetail(parking: ParkingModel) {
           <View style={styles.container}>
             <MapView
               style={styles.map}
+              customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
               region={region}
               zoomEnabled={false}
               rotateEnabled={false}
@@ -60,7 +64,11 @@ function ParkingDetail(parking: ParkingModel) {
             <Card.Title
               title="Ei hintatietoja saatavilla"
               left={() => (
-                <MaterialCommunityIcons name={'exclamation-thick'} color={'red'} size={34} />
+                <MaterialCommunityIcons
+                  name={'exclamation-thick'}
+                  color={theme.colors.announcement.red}
+                  size={34}
+                />
               )}
               titleVariant="titleLarge"
             />

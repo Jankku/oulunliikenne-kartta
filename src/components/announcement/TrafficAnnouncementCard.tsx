@@ -1,8 +1,9 @@
-import { Button, Card } from 'react-native-paper';
+import { Button, Card, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useReducer } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
+import type { CustomTheme } from '../../styles/theme';
 
 const styles = StyleSheet.create({
   rightStyle: {
@@ -13,16 +14,6 @@ const styles = StyleSheet.create({
   },
   subtitleStyle: { opacity: 0.8 },
 });
-
-const severityColors: Record<TrafficDisruptionSeverity, string> = {
-  HIGHEST: 'red',
-  HIGH: 'red',
-  MEDIUM: 'orange',
-  LOW: 'green',
-  LOWEST: 'green',
-  NONE: 'gray',
-  UNKNOWN: 'gray',
-};
 
 type TrafficAnnouncementCardProps = {
   title: string;
@@ -37,7 +28,18 @@ export default function TrafficAnnouncementCard({
   severity,
   onNavigateToMapPress,
 }: TrafficAnnouncementCardProps) {
+  const theme: CustomTheme = useTheme();
   const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
+
+  const severityColors: Record<TrafficDisruptionSeverity, string> = {
+    HIGHEST: theme.colors.announcement.red,
+    HIGH: theme.colors.announcement.red,
+    MEDIUM: theme.colors.announcement.orange,
+    LOW: theme.colors.announcement.green,
+    LOWEST: theme.colors.announcement.green,
+    NONE: theme.colors.announcement.gray,
+    UNKNOWN: theme.colors.announcement.gray,
+  };
 
   return (
     <Card>
@@ -57,6 +59,7 @@ export default function TrafficAnnouncementCard({
           right={(props) => (
             <MaterialCommunityIcons
               name={showDescription ? 'chevron-up' : 'chevron-down'}
+              color={theme.colors.onPrimaryContainer}
               {...props}
             />
           )}

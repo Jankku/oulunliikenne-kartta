@@ -4,11 +4,13 @@ import MapInfoBox from '../../components/map/infobox/MapInfoBox';
 import TrafficAnnouncementPositionLayer from '../../components/announcement/map/TrafficAnnouncementPositionLayer';
 import { AnnouncementStackScreenProps } from '../../navigation/types';
 import MapInfoBoxItem from '../../components/map/infobox/MapInfoBoxItem';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import useRoadwork from '../../hooks/announcements/useRoadwork';
 import { createRef } from 'react';
+import { darkMapStyle, lightMapStyle } from '../../styles/mapstyle';
 
 export default function RoadWorkMap({ route }: AnnouncementStackScreenProps<'RoadWorkMap'>) {
+  const theme = useTheme();
   const map = createRef<MapView>();
   const { roadworkId } = route.params;
   const roadwork = useRoadwork(roadworkId);
@@ -19,6 +21,7 @@ export default function RoadWorkMap({ route }: AnnouncementStackScreenProps<'Roa
         onMapLoaded={() => map.current?.fitToElements({ animated: true })}
         ref={map}
         style={styles.map}
+        customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
         initialRegion={{
           latitude: 65.01,
           longitude: 25.5,

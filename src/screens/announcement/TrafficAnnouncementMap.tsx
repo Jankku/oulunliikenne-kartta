@@ -6,8 +6,10 @@ import TrafficAnnouncementPositionLayer from '../../components/announcement/map/
 import useTrafficAnnouncement from '../../hooks/announcements/useTrafficAnnouncement';
 import { AnnouncementStackScreenProps } from '../../navigation/types';
 import MapInfoBoxItem from '../../components/map/infobox/MapInfoBoxItem';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { createRef } from 'react';
+import { darkMapStyle, lightMapStyle } from '../../styles/mapstyle';
+import type { CustomTheme } from '../../styles/theme';
 
 const getArrayDepth = (array: unknown): number => {
   return Array.isArray(array) ? 1 + Math.max(0, ...array.map(getArrayDepth)) : 0;
@@ -32,6 +34,7 @@ const normalizeDepth = (
 export default function TrafficAnnouncementMap({
   route,
 }: AnnouncementStackScreenProps<'AnnouncementMap'>) {
+  const theme: CustomTheme = useTheme();
   const map = createRef<MapView>();
   const { announcementId } = route.params;
   const announcement = useTrafficAnnouncement(announcementId);
@@ -57,6 +60,7 @@ export default function TrafficAnnouncementMap({
         ref={map}
         onMapLoaded={() => focusAnnouncement()}
         style={styles.map}
+        customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
         initialRegion={{
           latitude: 65.01,
           longitude: 25.5,
@@ -76,8 +80,16 @@ export default function TrafficAnnouncementMap({
           Häiriö
         </Text>
         <MapInfoBoxItem text="Paikka" icon="map-marker" iconColor="rgba(230, 0, 0, 1)" />
-        <MapInfoBoxItem text="Vaikutusalue" icon="circle" iconColor="rgba(200, 0, 0, 0.7)" />
-        <MapInfoBoxItem text="Kiertotie" icon="circle" iconColor="rgba(0, 120, 40, 0.7)" />
+        <MapInfoBoxItem
+          text="Vaikutusalue"
+          icon="circle"
+          iconColor={theme.colors.announcement.red}
+        />
+        <MapInfoBoxItem
+          text="Kiertotie"
+          icon="circle"
+          iconColor={theme.colors.announcement.green}
+        />
       </MapInfoBox>
     </SafeAreaView>
   );
