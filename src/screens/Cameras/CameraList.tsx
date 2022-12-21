@@ -20,11 +20,15 @@ export default function CameraList({ navigation }: CameraStackScreenProps<'Camer
     <FlatList
       data={result.data}
       keyExtractor={(item) => item.cameraId}
+      numColumns={2}
       ItemSeparatorComponent={() => ListItemSeparator(16)}
+      columnWrapperStyle={styles.columnWrapper}
       contentContainerStyle={styles.contentContainer}
-      style={styles.list}
       renderItem={({ item }) => (
-        <Card onPress={() => navigation.navigate('CameraDetail', { camera: item })}>
+        <Card
+          style={styles.item}
+          onPress={() => navigation.navigate('CameraDetail', { camera: item })}
+        >
           <Card.Cover source={{ uri: item.images[0].imageUrl }} />
           <Card.Title title={item.name} subtitle={`${item.images.length} kuvaa`} />
         </Card>
@@ -34,8 +38,11 @@ export default function CameraList({ navigation }: CameraStackScreenProps<'Camer
 }
 
 const styles = StyleSheet.create({
+  columnWrapper: {
+    justifyContent: 'space-between',
+  },
   contentContainer: {
     padding: 16,
   },
-  list: { flex: 1 },
+  item: { flex: 0.48 },
 });
