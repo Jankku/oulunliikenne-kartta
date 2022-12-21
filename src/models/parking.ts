@@ -22,8 +22,8 @@ export function fromSchemaToModel(schemaObject: SchemaParking): ParkingModel {
     carParkId: schemaObject.carParkId,
     name: schemaObject.name,
     coordinates: { latitude: schemaObject.lat, longitude: schemaObject.lon },
-    maxCapacity: schemaObject.maxCapacity?.toString() ?? INFORMATION_NOT_AVAILABLE,
-    spacesAvailable: schemaObject.spacesAvailable?.toString() ?? INFORMATION_NOT_AVAILABLE,
+    maxCapacity: schemaObject.maxCapacity?.toString() ?? 0,
+    spacesAvailable: schemaObject.spacesAvailable?.toString() ?? 0,
     pricing:
       schemaObject.pricing?.map((pricing) => {
         return { title: pricing.title.fi, description: pricing.value.fi };

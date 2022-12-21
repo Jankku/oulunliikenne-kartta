@@ -28,9 +28,9 @@ function ParkingDetail(parking: ParkingModel) {
 
   return (
     <ScrollView>
-      <Card>
+      <Card style={styles.card}>
         <Card.Content>
-          <View style={styles.container}>
+          <View style={styles.mapContainer}>
             <MapView
               style={styles.map}
               customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
@@ -44,15 +44,16 @@ function ParkingDetail(parking: ParkingModel) {
             </MapView>
           </View>
         </Card.Content>
-        <Card>
+
+        <Card elevation={0} style={styles.card}>
           <Card.Content>
-            <Title>{`Kapasiteetti: ${parking.maxCapacity}`}</Title>
+            <Title>{`Vapaana ${parking.spacesAvailable}/${parking.maxCapacity} paikkaa`}</Title>
           </Card.Content>
         </Card>
 
         {parking.pricing.length > 0 ? (
           parking.pricing.map((p, i) => (
-            <Card key={i}>
+            <Card key={i} elevation={0} style={styles.card}>
               <Card.Content>
                 <Title>{p.title}</Title>
                 <Paragraph>{p.description}</Paragraph>
@@ -60,7 +61,7 @@ function ParkingDetail(parking: ParkingModel) {
             </Card>
           ))
         ) : (
-          <Card>
+          <Card style={styles.card}>
             <Card.Title
               title="Ei hintatietoja saatavilla"
               left={() => (
@@ -80,18 +81,21 @@ function ParkingDetail(parking: ParkingModel) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 16,
-    height: 250,
-    minHeight: 5,
-    minWidth: 5,
-    overflow: 'hidden',
-    width: '100%',
+  card: {
+    borderRadius: 0,
   },
   map: {
     height: '100%',
     minHeight: 5,
     minWidth: 5,
+    width: '100%',
+  },
+  mapContainer: {
+    borderRadius: 16,
+    height: 250,
+    minHeight: 5,
+    minWidth: 5,
+    overflow: 'hidden',
     width: '100%',
   },
 });
