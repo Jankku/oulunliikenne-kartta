@@ -1,6 +1,6 @@
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Title, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -35,21 +35,23 @@ export default function About({ navigation }: AboutStackScreenProps<'AboutScreen
   return (
     <SafeAreaView style={styles.about}>
       <Image style={styles.image} source={logo} />
-      <Title style={styles.title}>Oulun Liikennekartta</Title>
-      <Text style={styles.text}>Lyhyt kuvaus teksti sovelluksesta</Text>
-      <View style={styles.buttonContainer}>
-        <Button
-          mode="contained"
-          style={styles.button}
-          labelStyle={styles.buttonText}
-          onPress={openGitHub}
-        >
-          GitHub
-        </Button>
-        <Button mode="contained" style={styles.button} labelStyle={styles.buttonText}>
-          Lisenssi
-        </Button>
-      </View>
+      <Text variant="titleLarge" style={styles.title}>
+        Oulun Liikennekartta
+      </Text>
+      <Text variant="titleMedium" style={styles.text}>
+        Oulun ammattikorkeakoulun Mobiiliprojekti-kurssilla luotu sovellus.
+      </Text>
+      <Text variant="titleMedium" style={styles.text}>
+        Käyttää Oulun liikenteen rajapintoja.
+      </Text>
+      <Button
+        mode="contained"
+        style={styles.button}
+        labelStyle={styles.buttonText}
+        onPress={openGitHub}
+      >
+        Lähdekoodi
+      </Button>
     </SafeAreaView>
   );
 }
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
   about: {
     alignItems: 'center',
     flex: 1,
-    textAlign: 'center',
+    paddingHorizontal: 32,
   },
   button: {
     borderRadius: 8,
@@ -67,26 +69,22 @@ const styles = StyleSheet.create({
     margin: 30,
     padding: 6,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-  },
   buttonText: {
     fontSize: 18,
   },
   image: {
     borderRadius: 100,
-    height: 200,
-    marginBottom: 50,
-    marginTop: 100,
+    height: 150,
+    marginBottom: 32,
+    marginTop: 50,
     resizeMode: 'cover',
-    width: 200,
+    width: 150,
   },
   text: {
-    fontSize: 18,
-    marginBottom: 50,
+    paddingBottom: 4,
+    textAlign: 'center',
   },
   title: {
-    fontSize: 30,
     marginBottom: 16,
   },
 });
