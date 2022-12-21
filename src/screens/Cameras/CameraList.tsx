@@ -1,12 +1,11 @@
-import { Card, ProgressBar, Text, useTheme } from 'react-native-paper';
-import { View, FlatList } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Card, ProgressBar, Text } from 'react-native-paper';
+import { FlatList, StyleSheet } from 'react-native';
 import useTrafficCameras from '../../hooks/map/useTrafficCameras';
 import { toErrorMessage } from '../../graphql/error';
 import { CameraStackScreenProps } from '../../navigation/types';
+import ListItemSeparator from '../../components/common/ListItemSeparator';
 
 export default function CameraList({ navigation }: CameraStackScreenProps<'CameraList'>) {
-  const theme = useTheme();
   const result = useTrafficCameras();
 
   if (result.loading) {
@@ -17,28 +16,26 @@ export default function CameraList({ navigation }: CameraStackScreenProps<'Camer
     return <Text>{toErrorMessage(result.error)}</Text>;
   }
 
-  //Should we check for an empty array and return an error text?
-
   return (
-    <View>
-      <FlatList
-        data={result.data}
-        keyExtractor={(item) => item.cameraId}
-        renderItem={({ item }) => (
-          <Card onPress={() => navigation.navigate('CameraDetail', { camera: item })}>
-            <Card.Title
-              title={item.name}
-              left={(props) => (
-                <MaterialCommunityIcons
-                  name="camera"
-                  color={theme.dark ? 'white' : 'black'}
-                  {...props}
-                />
-              )}
-            />
-          </Card>
-        )}
-      />
-    </View>
+    <FlatList
+      data={result.data}
+      keyExtractor={(item) => item.cameraId}
+      ItemSeparatorComponent={() => ListItemSeparator(16)}
+      contentContainerStyle={styles.contentContainer}
+      style={styles.list}
+      renderItem={({ item }) => (
+        <Card onPress={() => navigation.navigate('CameraDetail', { camera: item })}>
+          <Card.Cover source={{ uri: item.images[0].imageUrl }} />
+          <Card.Title title={item.name} subtitle={`${item.images.length} kuvaa`} />
+        </Card>
+      )}
+    />
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    padding: 16,
+  },
+  list: { flex: 1 },
+});

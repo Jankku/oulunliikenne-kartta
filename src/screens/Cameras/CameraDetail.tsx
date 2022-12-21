@@ -1,5 +1,6 @@
-import { FlatList, ListRenderItemInfo, View } from 'react-native';
+import { FlatList, ListRenderItemInfo, StyleSheet } from 'react-native';
 import { Card, Title } from 'react-native-paper';
+import ListItemSeparator from '../../components/common/ListItemSeparator';
 import { CameraImage, CameraModel } from '../../models/camera';
 import { CameraStackScreenProps, MapStackScreenProps } from '../../navigation/types';
 
@@ -13,9 +14,14 @@ export function CameraDetailCameraListScreen({ route }: CameraStackScreenProps<'
 
 function CameraDetail(camera: CameraModel) {
   return (
-    <View>
-      <FlatList data={camera.images} keyExtractor={(item) => item.id} renderItem={ImageElement} />
-    </View>
+    <FlatList
+      style={styles.list}
+      contentContainerStyle={styles.contentContainer}
+      ItemSeparatorComponent={() => ListItemSeparator(16)}
+      data={camera.images}
+      keyExtractor={(item) => item.id}
+      renderItem={ImageElement}
+    />
   );
 }
 
@@ -29,3 +35,10 @@ function ImageElement<T extends CameraImage>(info: ListRenderItemInfo<T>): JSX.E
     </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    padding: 16,
+  },
+  list: { flex: 1 },
+});
