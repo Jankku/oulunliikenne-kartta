@@ -19,8 +19,8 @@ Oulun Liikennekartta
 ### Pysäköinti
 ![Pysäköinti](screenshots/pysakointi.png "Pysäköinti")
 
-### Häiriöiedotteet
-![Häiriöiedotteet](screenshots/tiedotteet.png "Häiriöiedotteet")
+### Häiriötiedotteet
+![Häiriötiedotteet](screenshots/tiedotteet.png "Häiriötiedotteet")
 
 ### Tietyöt
 ![Tietyöt](screenshots/tietyot.png "Tietyöt")
