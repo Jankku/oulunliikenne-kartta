@@ -1,5 +1,5 @@
 import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapInfoBox from '../components/map/infobox/MapInfoBox';
 import MapInfoBoxItem from '../components/map/infobox/MapInfoBoxItem';
 import ParkingLayer from '../components/map/ParkingLayer';
@@ -58,6 +58,7 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
   return (
     <SafeAreaView>
       <MapView
+        provider={PROVIDER_GOOGLE}
         customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
         style={styles.map}
         initialRegion={{

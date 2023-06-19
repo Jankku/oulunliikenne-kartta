@@ -1,0 +1,10 @@
+{
+  "cli": {
+    "version": ">= 3.13.3"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal"
+    }
+  }
+}

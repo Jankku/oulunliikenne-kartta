@@ -22,10 +22,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#6750a4"
+      },
+      "package": "com.jankku.oulunliikennekartta",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBgOKMnwypv9wkwM778ZS3-tC2kIhbIp_4"
+        }
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2abf1b3a-7ed3-4e52-b768-72a9ee65e6d0"
+      }
     }
   }
 }
