@@ -7,6 +7,7 @@ import cameraBlack from './camera.png';
 // @ts-ignore
 import cameraWhite from './camera-white.png';
 import { useTheme } from 'react-native-paper';
+import { Image } from 'react-native';
 
 export type CameraProps = {
   camera: CameraModel;
@@ -15,13 +16,13 @@ export type CameraProps = {
 
 export function CameraMarker({ camera, onItemSelect }: CameraProps): JSX.Element {
   const theme = useTheme();
-
   return (
     <Marker
-      image={theme.dark ? cameraWhite : cameraBlack}
       coordinate={camera.coordinates}
       title={camera.name}
       onCalloutPress={() => onItemSelect(camera)}
-    />
+    >
+      <Image source={theme.dark ? cameraWhite : cameraBlack} style={{ width: 20, height: 20 }} />
+    </Marker>
   );
 }

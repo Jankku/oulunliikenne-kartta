@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
+import 'react-native-gesture-handler';
 import { BottomNav } from './src/navigation/BottomNav';
 import { GraphQLProvider } from './src/graphql/client';
 import { NavigationContainer } from '@react-navigation/native';
