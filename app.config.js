@@ -1,9 +1,9 @@
 export default ({ config }) => ({
   ...config,
   expo: {
-    name: 'Oulun liikennekartta',
+    name: 'Oulun Liikennekartta',
     slug: 'oulunliikenne-kartta',
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
