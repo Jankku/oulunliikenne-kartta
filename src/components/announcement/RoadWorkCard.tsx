@@ -1,36 +1,32 @@
 import { Button, Card, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useReducer } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-
-const styles = StyleSheet.create({
-  rightStyle: {
-    paddingEnd: 16,
-  },
-  style: {
-    paddingVertical: 16,
-  },
-  subtitleStyle: { opacity: 0.8 },
-});
+import { CustomTheme } from '../../styles/theme';
 
 type RoadWorkCardProps = {
+  id: string;
   description: string;
   speedlimit: number;
   onNavigateToMapPress: () => void;
 };
 
-export default function RoadWorkCard({
-  description,
-  speedlimit,
-  onNavigateToMapPress,
-}: RoadWorkCardProps) {
-  const theme = useTheme();
-  const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
+function RoadWorkCard({ id, description, speedlimit, onNavigateToMapPress }: RoadWorkCardProps) {
+  const theme: CustomTheme = useTheme();
+  const [showDescription, setShowDescription] = useState(false);
   const [title, newDescription] = formatDescription(description, speedlimit);
+  const lastItemId = useRef(id);
+
+  if (id !== lastItemId.current) {
+    lastItemId.current = id;
+    setShowDescription(false);
+  }
+
+  const toggleDescription = useCallback(() => setShowDescription((prev) => !prev), []);
 
   return (
     <Card>
-      <Pressable onPress={() => setShowDescription()}>
+      <Pressable onPress={toggleDescription}>
         <Card.Title
           title={title}
           titleNumberOfLines={0}
@@ -65,6 +61,18 @@ export default function RoadWorkCard({
     </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  rightStyle: {
+    paddingEnd: 16,
+  },
+  style: {
+    paddingVertical: 16,
+  },
+  subtitleStyle: { opacity: 0.8 },
+});
+
+export default memo(RoadWorkCard);
 
 const formatDescription = (
   text: string,

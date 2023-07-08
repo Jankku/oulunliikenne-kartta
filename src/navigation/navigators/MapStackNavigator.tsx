@@ -12,6 +12,7 @@ export default function MapStackNavigator() {
     <Stack.Navigator
       initialRouteName="MapScreen"
       screenOptions={{
+        freezeOnBlur: true,
         title: 'Kartta',
         header: (props) => <CustomAppBar {...props} />,
       }}

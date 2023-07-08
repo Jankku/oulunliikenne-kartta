@@ -2,8 +2,6 @@ import { Image, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Text } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import logo from '../../assets/icon.png';
 import { AboutStackScreenProps } from '../navigation/types';
 import { useEffect } from 'react';

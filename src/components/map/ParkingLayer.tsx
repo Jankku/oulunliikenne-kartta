@@ -8,7 +8,6 @@ export type ParkingLayerProps = {
 export default function ParkingLayer({ onItemSelect }: ParkingLayerProps) {
   const result = useCarParkData();
 
-  //For now the layer version might as well show the results or nothing
   if (result.loading || result.error) return null;
 
   const markers = result.data.map((parking) => (

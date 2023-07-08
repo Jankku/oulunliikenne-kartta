@@ -1,28 +1,26 @@
 import { Marker } from 'react-native-maps';
 import { CameraModel } from '../../../models/camera';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import cameraBlack from './camera.png';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import cameraWhite from './camera-white.png';
 import { useTheme } from 'react-native-paper';
-import { Image } from 'react-native';
+import { useMapReady } from '../../../providers/MapReadyProvider';
 
 export type CameraProps = {
   camera: CameraModel;
   onItemSelect: (selected: CameraModel) => void;
 };
 
-export function CameraMarker({ camera, onItemSelect }: CameraProps): JSX.Element {
+export default function CameraMarker({ camera, onItemSelect }: CameraProps): JSX.Element {
   const theme = useTheme();
+  const ready = useMapReady();
+
   return (
     <Marker
       coordinate={camera.coordinates}
       title={camera.name}
+      icon={theme.dark ? cameraWhite : cameraBlack}
       onCalloutPress={() => onItemSelect(camera)}
-    >
-      <Image source={theme.dark ? cameraWhite : cameraBlack} style={{ width: 20, height: 20 }} />
-    </Marker>
+      tracksViewChanges={!ready}
+    />
   );
 }

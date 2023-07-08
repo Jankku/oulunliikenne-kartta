@@ -1,5 +1,5 @@
 import { Text, ActivityIndicator } from 'react-native-paper';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import RoadWorkCard from '../../components/announcement/RoadWorkCard';
 import useUpdateTabTitle from '../../hooks/announcements/useUpdateTabTitle';
 import {
@@ -9,7 +9,7 @@ import {
 import Center from '../../components/util/Center';
 import useAllRoadworks, { RoadworksResult } from '../../hooks/announcements/useAllRoadworks';
 import { toErrorMessage } from '../../graphql/error';
-import { useMemo, useReducer, useState } from 'react';
+import { useCallback, useMemo, useReducer, useState } from 'react';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
 import FilterDialog from '../../components/announcement/dialog/FilterDialog';
@@ -19,6 +19,8 @@ import { isAllFiltersEmpty, isFilterNotEmpty } from '../../utils/trafficannounce
 import { StackNavigationProp } from '@react-navigation/stack';
 import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
 import { useFocusEffect } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
+import ListItemSeparator from '../../components/common/ListItemSeparator';
 
 export type RoadworkFilters = {
   severity: TrafficDisruptionSeverity[];
@@ -39,6 +41,8 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
       headerRight: <AppbarActionIcon icon="filter" onPress={() => toggleFilterDialog()} />,
     });
   });
+
+  const itemSeparator = useCallback(() => <ListItemSeparator height={8} />, []);
 
   if (result.loading) {
     return (
@@ -61,13 +65,15 @@ export default function Roadwork({ navigation }: AnnouncementTabScreenProps<'Roa
   return (
     <>
       <View style={styles.container}>
-        <FlatList
-          contentContainerStyle={roadworks.length === 0 ? styles.listContainer : undefined}
+        <FlashList
           data={roadworks}
           ListEmptyComponent={TrafficAnnouncementListEmpty}
           keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={itemSeparator}
+          estimatedItemSize={75}
           renderItem={({ item }) => (
             <RoadWorkCard
+              id={item.id}
               description={item.description}
               speedlimit={item.speedlimit}
               onNavigateToMapPress={() =>
@@ -110,5 +116,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  listContainer: { alignContent: 'center', flex: 1, justifyContent: 'center' },
 });

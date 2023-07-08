@@ -11,6 +11,7 @@ export default function ParkingListStackNavigator() {
     <Stack.Navigator
       initialRouteName="ParkingList"
       screenOptions={{
+        freezeOnBlur: true,
         header: (props) => <CustomAppBar {...props} />,
       }}
     >

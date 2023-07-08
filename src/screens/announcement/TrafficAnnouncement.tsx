@@ -1,9 +1,9 @@
 import TrafficAnnouncementCard from '../../components/announcement/TrafficAnnouncementCard';
 import { ActivityIndicator, Text } from 'react-native-paper';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import TrafficAnnouncementListEmpty from '../../components/announcement/TrafficAnnouncementListEmpty';
 import Center from '../../components/util/Center';
-import { useMemo, useReducer, useState } from 'react';
+import { useCallback, useMemo, useReducer, useState } from 'react';
 import type {
   AnnouncementStackNavigatorParamList,
   AnnouncementTabScreenProps,
@@ -28,6 +28,8 @@ import TransportModeSection from '../../components/announcement/dialog/Transport
 import SeveritySection from '../../components/announcement/dialog/SeveritySection';
 import AppbarActionIcon from '../../components/appbar/AppbarActionIcon';
 import { useFocusEffect } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
+import ListItemSeparator from '../../components/common/ListItemSeparator';
 
 export type TrafficAnnouncementFilters = {
   modesOfTransport: TrafficDisruptionModeOfTransport[];
@@ -54,6 +56,8 @@ export default function TrafficAnnouncement({
     });
   });
 
+  const itemSeparator = useCallback(() => <ListItemSeparator height={8} />, []);
+
   if (result.loading) {
     return (
       <Center>
@@ -75,13 +79,15 @@ export default function TrafficAnnouncement({
   return (
     <>
       <View style={styles.container}>
-        <FlatList
-          contentContainerStyle={announcements.length === 0 ? styles.listContainer : undefined}
+        <FlashList
           data={announcements}
+          estimatedItemSize={102}
           ListEmptyComponent={TrafficAnnouncementListEmpty}
           keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={itemSeparator}
           renderItem={({ item }) => (
             <TrafficAnnouncementCard
+              id={item.id}
               title={item.title}
               description={item.description}
               severity={item.severity}
@@ -143,5 +149,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  listContainer: { alignContent: 'center', flex: 1, justifyContent: 'center' },
 });

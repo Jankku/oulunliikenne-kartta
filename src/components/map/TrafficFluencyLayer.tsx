@@ -33,10 +33,8 @@ function TrafficFluencyLayer() {
     },
   };
 
-  //Do not render anything if still loading or got an error
-  if (result.loading || result.error) {
-    return null;
-  }
+  if (result.loading || result.error) return null;
+
   const { data } = result;
 
   return (

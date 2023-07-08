@@ -11,6 +11,7 @@ export default function AboutStackNavigator() {
     <Stack.Navigator
       initialRouteName="AboutScreen"
       screenOptions={{
+        freezeOnBlur: true,
         header: (props) => <CustomAppBar {...props} />,
       }}
     >

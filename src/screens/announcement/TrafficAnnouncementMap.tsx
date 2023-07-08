@@ -15,10 +15,9 @@ const getArrayDepth = (array: unknown): number => {
   return Array.isArray(array) ? 1 + Math.max(0, ...array.map(getArrayDepth)) : 0;
 };
 
-// TODO: Fix these type errors
-const normalizeDepth = (
-  value: GeoJSON.Position | GeoJSON.Position[] | GeoJSON.Position[][] | GeoJSON.Position[][][]
-): GeoJSON.Position[][] => {
+type Nested<T> = T | Array<Nested<T>>;
+
+const normalizeDepth = (value: Nested<GeoJSON.Position>) => {
   if (!Array.isArray(value)) return [value];
 
   const depth = getArrayDepth(value);
@@ -27,7 +26,7 @@ const normalizeDepth = (
   } else if (depth === 2) {
     return value;
   } else {
-    return value.flat(1);
+    return value.flat(1) as Nested<GeoJSON.Position>;
   }
 };
 
@@ -44,13 +43,15 @@ export default function TrafficAnnouncementMap({
       const feature = announcement.data.geojson.features[0];
       if (feature.geometry.type === 'GeometryCollection') return;
 
-      const coordinates = normalizeDepth(feature.geometry.coordinates);
+      const coordinates: Nested<GeoJSON.Position> = normalizeDepth(feature.geometry.coordinates);
       const latLngArray: LatLng[] = coordinates.map((coord) => ({
-        latitude: coord[1] as unknown as number,
-        longitude: coord[0] as unknown as number,
+        latitude: (coord as GeoJSON.Position)[1],
+        longitude: (coord as GeoJSON.Position)[0],
       }));
 
-      map.current?.fitToCoordinates(latLngArray, { animated: true });
+      map.current?.fitToCoordinates(latLngArray, {
+        animated: true,
+      });
     }
   };
 
@@ -58,7 +59,7 @@ export default function TrafficAnnouncementMap({
     <SafeAreaView>
       <MapView
         ref={map}
-        onMapLoaded={() => focusAnnouncement()}
+        onMapLoaded={focusAnnouncement}
         style={styles.map}
         customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
         initialRegion={{

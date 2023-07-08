@@ -11,6 +11,7 @@ export default function CameraListStackNavigator() {
     <Stack.Navigator
       initialRouteName="CameraList"
       screenOptions={{
+        freezeOnBlur: true,
         header: (props) => <CustomAppBar {...props} />,
       }}
     >

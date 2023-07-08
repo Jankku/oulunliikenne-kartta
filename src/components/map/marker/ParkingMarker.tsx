@@ -1,28 +1,30 @@
 import { Image } from 'react-native';
 import { Marker } from 'react-native-maps';
 import { ParkingModel } from '../../../models/parking';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import parkingIcon from './parking.png';
+import { memo, useCallback } from 'react';
+import { useMapReady } from '../../../providers/MapReadyProvider';
 
 export type ParkingProps = {
   carkPark: ParkingModel;
   onItemSelect?: (selected: ParkingModel) => void;
 };
 
-export default function ParkingMarker({ carkPark, onItemSelect }: ParkingProps): JSX.Element {
+function ParkingMarker({ carkPark, onItemSelect }: ParkingProps): JSX.Element {
   const result = Image.resolveAssetSource(parkingIcon);
-  /**
-   * <Marker/> seems to ignore ImageSource height and width
-   * so use a child component to override it with an image
-   */
+  const ready = useMapReady();
+  const onPress = useCallback(() => onItemSelect?.(carkPark), [carkPark, onItemSelect]);
+
   return (
     <Marker
       coordinate={carkPark.coordinates}
       title={carkPark.name}
-      onCalloutPress={onItemSelect ? () => onItemSelect(carkPark) : undefined}
+      onCalloutPress={onPress}
+      tracksViewChanges={!ready}
     >
       <Image source={{ uri: result.uri, width: 20, height: 20 }} />
     </Marker>
   );
 }
+
+export default memo(ParkingMarker);

@@ -1,4 +1,4 @@
-import { CameraMarker, CameraProps } from './marker/CameraMarker';
+import CameraMarker, { CameraProps } from './marker/CameraMarker';
 import useTrafficCameras from '../../hooks/map/useTrafficCameras';
 
 export type TrafficCameraLayerProps = {

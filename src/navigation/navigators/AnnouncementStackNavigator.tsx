@@ -12,6 +12,7 @@ export default function AnnouncementStackNavigator() {
     <Stack.Navigator
       id="announcementStackNavigator"
       screenOptions={{
+        freezeOnBlur: true,
         title: 'Tiedotteet',
         header: (props) => <CustomAppBar {...props} />,
       }}

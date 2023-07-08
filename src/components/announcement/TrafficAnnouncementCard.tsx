@@ -1,49 +1,52 @@
 import { Button, Card, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useReducer } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { TrafficDisruptionSeverity } from '../../models/trafficannouncement';
 import type { CustomTheme } from '../../styles/theme';
 
-const styles = StyleSheet.create({
-  rightStyle: {
-    paddingEnd: 16,
-  },
-  style: {
-    paddingVertical: 16,
-  },
-  subtitleStyle: { opacity: 0.8 },
-});
-
 type TrafficAnnouncementCardProps = {
+  id: string;
   title: string;
   description: string;
   severity: TrafficDisruptionSeverity;
   onNavigateToMapPress: () => void;
 };
 
-export default function TrafficAnnouncementCard({
+function TrafficAnnouncementCard({
+  id,
   title,
   description,
   severity,
   onNavigateToMapPress,
 }: TrafficAnnouncementCardProps) {
   const theme: CustomTheme = useTheme();
-  const [showDescription, setShowDescription] = useReducer((prev) => !prev, false);
+  const [showDescription, setShowDescription] = useState(false);
+  const lastItemId = useRef(id);
 
-  const severityColors: Record<TrafficDisruptionSeverity, string> = {
-    HIGHEST: theme.colors.announcement.red,
-    HIGH: theme.colors.announcement.red,
-    MEDIUM: theme.colors.announcement.orange,
-    LOW: theme.colors.announcement.green,
-    LOWEST: theme.colors.announcement.green,
-    NONE: theme.colors.announcement.gray,
-    UNKNOWN: theme.colors.announcement.gray,
-  };
+  if (id !== lastItemId.current) {
+    lastItemId.current = id;
+    setShowDescription(false);
+  }
+
+  const toggleDescription = useCallback(() => setShowDescription((prev) => !prev), []);
+
+  const severityColors: Record<TrafficDisruptionSeverity, string> = useMemo(
+    () => ({
+      HIGHEST: theme.colors.announcement.red,
+      HIGH: theme.colors.announcement.red,
+      MEDIUM: theme.colors.announcement.orange,
+      LOW: theme.colors.announcement.green,
+      LOWEST: theme.colors.announcement.green,
+      NONE: theme.colors.announcement.gray,
+      UNKNOWN: theme.colors.announcement.gray,
+    }),
+    [theme.colors.announcement]
+  );
 
   return (
     <Card>
-      <Pressable onPress={() => setShowDescription()}>
+      <Pressable onPress={toggleDescription}>
         <Card.Title
           title={title}
           titleNumberOfLines={0}
@@ -78,3 +81,15 @@ export default function TrafficAnnouncementCard({
     </Card>
   );
 }
+
+const styles = StyleSheet.create({
+  rightStyle: {
+    paddingEnd: 16,
+  },
+  style: {
+    paddingVertical: 16,
+  },
+  subtitleStyle: { opacity: 0.8 },
+});
+
+export default memo(TrafficAnnouncementCard);

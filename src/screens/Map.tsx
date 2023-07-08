@@ -5,17 +5,18 @@ import MapInfoBoxItem from '../components/map/infobox/MapInfoBoxItem';
 import ParkingLayer from '../components/map/ParkingLayer';
 import TrafficCameraLayer from '../components/map/TrafficCameraLayer';
 import TrafficFluencyLayer from '../components/map/TrafficFluencyLayer';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import parkingIcon from '../components/map/marker/parking.png';
 import { Text, useTheme } from 'react-native-paper';
 import { MapStackScreenProps } from '../navigation/types';
-import { ReactNode, useEffect, useMemo, useReducer, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import AppbarActionIcon from '../components/appbar/AppbarActionIcon';
 import FilterDialog from '../components/announcement/dialog/FilterDialog';
 import MapLayerSection from '../components/announcement/dialog/MapLayerSection';
 import { darkMapStyle, lightMapStyle } from '../styles/mapstyle';
 import type { CustomTheme } from '../styles/theme';
+import type { ParkingModel } from '../models/parking';
+import type { CameraModel } from '../models/camera';
+import { MapReadyProvider } from '../providers/MapReadyProvider';
 
 export type MapLayerLabel = 'Liikenteensujuvuus' | 'Kamerat' | 'Parkkihallit';
 
@@ -25,28 +26,37 @@ export type MapFilters = {
 
 export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
   const theme: CustomTheme = useTheme();
+  const [ready, setReady] = useState(false);
   const [filterDialogVisible, toggleFilterDialog] = useReducer((prev) => !prev, false);
   const [filters, setFilters] = useState<MapFilters>({
     layers: ['Kamerat', 'Liikenteensujuvuus', 'Parkkihallit'],
   });
 
+  const onCameraSelect = useCallback(
+    (selected: CameraModel) => navigation.navigate('CameraDetail', { camera: selected }),
+    [navigation]
+  );
+
+  const onParkingSelect = useCallback(
+    (selected: ParkingModel) => navigation.navigate('ParkingDetail', { parking: selected }),
+    [navigation]
+  );
+
   const mapLayers: Record<MapLayerLabel, ReactNode> = useMemo(
     () => ({
-      Kamerat: (
-        <TrafficCameraLayer
-          key={'layer1'}
-          onItemSelect={(selected) => navigation.navigate('CameraDetail', { camera: selected })}
-        />
-      ),
+      Kamerat: <TrafficCameraLayer key={'layer1'} onItemSelect={onCameraSelect} />,
       Liikenteensujuvuus: <TrafficFluencyLayer key={'layer2'} />,
-      Parkkihallit: (
-        <ParkingLayer
-          key={'layer3'}
-          onItemSelect={(selected) => navigation.navigate('ParkingDetail', { parking: selected })}
-        />
-      ),
+      Parkkihallit: <ParkingLayer key={'layer3'} onItemSelect={onParkingSelect} />,
     }),
-    [navigation]
+    [onCameraSelect, onParkingSelect]
+  );
+
+  const mapElements = useMemo(
+    () =>
+      Object.entries(mapLayers).map(([label, layer]) =>
+        filters.layers.includes(label as MapLayerLabel) ? layer : undefined
+      ),
+    [filters, mapLayers]
   );
 
   useEffect(() => {
@@ -61,6 +71,7 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
         provider={PROVIDER_GOOGLE}
         customMapStyle={theme.dark ? darkMapStyle : lightMapStyle}
         style={styles.map}
+        onMapReady={() => setReady(true)}
         initialRegion={{
           latitude: 65.01,
           longitude: 25.5,
@@ -68,11 +79,7 @@ export default function Map({ navigation }: MapStackScreenProps<'MapScreen'>) {
           longitudeDelta: 0.1,
         }}
       >
-        {Object.entries(mapLayers).map(([label, layer]) => {
-          if (filters.layers.includes(label as MapLayerLabel)) {
-            return layer;
-          }
-        })}
+        <MapReadyProvider ready={ready}>{mapElements}</MapReadyProvider>
       </MapView>
 
       <MapInfoBox>

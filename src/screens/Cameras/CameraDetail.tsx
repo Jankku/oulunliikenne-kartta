@@ -3,6 +3,7 @@ import { Card, Title } from 'react-native-paper';
 import ListItemSeparator from '../../components/common/ListItemSeparator';
 import { CameraImage, CameraModel } from '../../models/camera';
 import { CameraStackScreenProps, MapStackScreenProps } from '../../navigation/types';
+import { useCallback } from 'react';
 
 export function CameraDetailMapScreen({ route }: MapStackScreenProps<'CameraDetail'>) {
   return CameraDetail(route.params.camera);
@@ -13,11 +14,13 @@ export function CameraDetailCameraListScreen({ route }: CameraStackScreenProps<'
 }
 
 function CameraDetail(camera: CameraModel) {
+  const itemSeparator = useCallback(() => <ListItemSeparator height={16} />, []);
+
   return (
     <FlatList
       style={styles.list}
       contentContainerStyle={styles.contentContainer}
-      ItemSeparatorComponent={() => ListItemSeparator(16)}
+      ItemSeparatorComponent={itemSeparator}
       data={camera.images}
       keyExtractor={(item) => item.id}
       renderItem={ImageElement}
